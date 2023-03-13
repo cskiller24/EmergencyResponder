@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -50,9 +49,11 @@ class RolesAndPermissionSeeder extends Seeder
             'approve_deny_submissions',
         ];
 
-        foreach($listOfPermissions as $permission) {
-            Permission::create(['name' => $permission]);
-        }
+        $permissions = collect($listOfPermissions)->map(function ($permission) {
+            return ['name' => $permission];
+        });
+
+        Permission::insert($permissions->toArray());
 
         $adminPermissions = [
             // Emergency Types
@@ -84,8 +85,7 @@ class RolesAndPermissionSeeder extends Seeder
 
         $adminRole = Role::create(['name' => 'admin']);
 
-        foreach($adminPermissions as $permission)
-        {
+        foreach ($adminPermissions as $permission) {
             $adminRole->givePermissionTo($permission);
         }
 
@@ -102,8 +102,7 @@ class RolesAndPermissionSeeder extends Seeder
 
         $moderatorRole = Role::create(['name' => 'moderator']);
 
-        foreach($moderatorPermissions as $permission)
-        {
+        foreach ($moderatorPermissions as $permission) {
             $moderatorRole->givePermissionTo($permission);
         }
 
@@ -119,8 +118,7 @@ class RolesAndPermissionSeeder extends Seeder
 
         $userRole = Role::create(['name' => 'user']);
 
-        foreach($userPermissions as $permission)
-        {
+        foreach ($userPermissions as $permission) {
             $userRole->givePermissionTo($permission);
         }
     }

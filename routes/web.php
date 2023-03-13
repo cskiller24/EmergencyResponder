@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::prefix('admin')->middleware(['role:admin', 'auth'])->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admins.index');
+});
+
+// Route::get('test', function () {
+//     return view('auth.password-update');
+// });

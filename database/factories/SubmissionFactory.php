@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class SubmissionFactory extends Factory
 {
     protected $model = Submission::class;
+
     /**
      * Define the model's default state.
      */

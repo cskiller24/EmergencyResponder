@@ -10,8 +10,13 @@ Login | Emergency Responder
         <div class="card card-md">
             <div class="card-body">
                 <h2 class="h2 text-center mb-4">Login to your account</h2>
-                <form action="{{ route('register') }}" method="POST">
+                <form action="{{ route('login') }}" method="POST">
                     @csrf
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            <div class="text-muted">{{ session('status') }}</div>
+                        </div>
+                    @endif
                     <div class="mb-3">
                         <label class="form-label">Email address</label>
                         <input type="email" name="email" @class(['form-control', 'is-invalid'=> $errors->has('email')])
@@ -23,7 +28,7 @@ Login | Emergency Responder
                         <label class="form-label">
                             Password
                             <span class="form-label-description">
-                                <a href="./forgot-password.html">I forgot password</a>
+                                <a href="{{ route('password.request') }}">I forgot password</a>
                             </span>
                         </label>
                             <input type="password" name="password" @class(['form-control', 'is-invalid'=> $errors->has('password')])

@@ -7,7 +7,6 @@ use App\Models\Location;
 use App\Models\RelatedLink;
 use App\Models\Submission;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class SubmissionSeeder extends Seeder

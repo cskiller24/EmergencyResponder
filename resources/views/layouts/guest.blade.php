@@ -17,6 +17,6 @@
     <div class="d-flex justify-content-center align-items-center">
         @yield('content')
     </div>
-    <script src="{{ asset('dist/tabler/js/tabler.min.js') }}" defer></script>
+    <script src="{{ asset('dist/tabler/js/tabler.min.js') }}"></script>
 </body>
 </html>

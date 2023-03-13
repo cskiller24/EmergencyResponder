@@ -6,7 +6,6 @@ use App\Models\EmergencyType;
 use App\Models\Location;
 use App\Models\RelatedLink;
 use App\Models\Responder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ResponderSeeder extends Seeder
