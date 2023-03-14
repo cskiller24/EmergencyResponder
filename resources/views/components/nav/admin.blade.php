@@ -200,7 +200,7 @@
         </div>
         <div class="collapse navbar-collapse" id="sidebar-menu">
             <ul class="navbar-nav pt-lg-3">
-                <li class="nav-item">
+                <li @class(['nav-item', 'active' => route_named('admins.index')])>
                     <a class="nav-link" href="{{ route('admins.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/home -->
@@ -218,25 +218,7 @@
                         </span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check"
-                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
-                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
-                                <path d="M15 19l2 2l4 -4"></path>
-                            </svg>
-                        </span>
-                        <span class="nav-link-title">
-                            Roles and Permissions
-                        </span>
-                    </a>
-                </li>
-                <li class="nav-item">
+                <li @class(['nav-item', 'active' => route_named('')])>
                     <a class="nav-link" href="#">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
@@ -327,6 +309,43 @@
                         </span>
                         <span class="nav-link-title">
                             Emergency Types
+                        </span>
+                    </a>
+                </li>
+                <li @class(['nav-item', 'active' => route_named('roles.index')])>
+                    <a class="nav-link" href="{{ route('roles.index') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
+                                <path d="M15 19l2 2l4 -4"></path>
+                            </svg>
+                        </span>
+                        <span class="nav-link-title">
+                            Roles
+                        </span>
+                    </a>
+                </li>
+                <li @class(['nav-item', 'active' => route_named('permissions.index')])>
+                    <a class="nav-link" href="{{ route('permissions.index') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-lock-check"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M11.5 21h-4.5a2 2 0 0 1 -2 -2v-6a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v.5"></path>
+                                <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"></path>
+                                <path d="M8 11v-4a4 4 0 1 1 8 0v4"></path>
+                                <path d="M15 19l2 2l4 -4"></path>
+                            </svg>
+                        </span>
+                        <span class="nav-link-title">
+                            Permissions
                         </span>
                     </a>
                 </li>

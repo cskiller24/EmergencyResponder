@@ -19,13 +19,13 @@
             <div class="page-header d-print-none">
                 <div class="container-xl">
                     <div class="row g-2 align-items-center">
-                        <div class="col">
+                        <div class="col ms-1">
                             <!-- Page pre-title -->
                             <div class="page-pretitle">
-                                @yield('pre-title', '')
+                                @yield('pre-title', 'ADMIN')
                             </div>
                             <h2 class="page-title">
-                                @yield('page-title', 'Admin Dashboard')
+                                @yield('page-title', 'Dashboard')
                             </h2>
                         </div>
                         <!-- Page title actions -->

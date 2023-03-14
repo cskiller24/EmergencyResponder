@@ -37,7 +37,7 @@ Login | Emergency Responder
                     </div>
                     <div class="">
                         <label class="form-check">
-                            <input type="checkbox" class="form-check-input" />
+                            <input type="checkbox" class="form-check-input" name="remember" />
                             <span class="form-check-label">Remember me on this device</span>
                         </label>
                     </div>

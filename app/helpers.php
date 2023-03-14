@@ -21,3 +21,10 @@ if (! function_exists('redirectRole')) {
         return '/';
     }
 }
+
+if (! function_exists('route_named')) {
+    function route_named(string $path): bool
+    {
+        return request()->route()->named($path);
+    }
+}
