@@ -16,6 +16,8 @@ class RolesAndPermissionSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
+        $guard = config('auth.defaults.guard');
+
         $listOfPermissions = [
             // Emergency Types
             'emergency_type_store',
@@ -49,8 +51,8 @@ class RolesAndPermissionSeeder extends Seeder
             'approve_deny_submissions',
         ];
 
-        $permissions = collect($listOfPermissions)->map(function ($permission) {
-            return ['name' => $permission];
+        $permissions = collect($listOfPermissions)->map(function ($permission) use ($guard) {
+            return ['name' => $permission, 'guard_name' => $guard];
         });
 
         Permission::insert($permissions->toArray());
@@ -85,9 +87,7 @@ class RolesAndPermissionSeeder extends Seeder
 
         $adminRole = Role::create(['name' => 'admin']);
 
-        foreach ($adminPermissions as $permission) {
-            $adminRole->givePermissionTo($permission);
-        }
+        $adminRole->syncPermissions($adminPermissions);
 
         $moderatorPermissions = [
             'responder_update',
@@ -102,9 +102,7 @@ class RolesAndPermissionSeeder extends Seeder
 
         $moderatorRole = Role::create(['name' => 'moderator']);
 
-        foreach ($moderatorPermissions as $permission) {
-            $moderatorRole->givePermissionTo($permission);
-        }
+        $moderatorRole->syncPermissions($moderatorPermissions);
 
         $userPermissions = [
             'submission_show',
@@ -118,8 +116,6 @@ class RolesAndPermissionSeeder extends Seeder
 
         $userRole = Role::create(['name' => 'user']);
 
-        foreach ($userPermissions as $permission) {
-            $userRole->givePermissionTo($permission);
-        }
+        $userRole->syncPermissions($userPermissions);
     }
 }
