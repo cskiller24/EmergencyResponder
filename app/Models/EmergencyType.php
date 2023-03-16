@@ -21,8 +21,8 @@ class EmergencyType extends Model
         return $this->hasMany(Submission::class);
     }
 
-    public function responsers(): HasMany
+    public function responders(): HasMany
     {
-        return $this->hasMany(Responser::class);
+        return $this->hasMany(Responder::class);
     }
 }
