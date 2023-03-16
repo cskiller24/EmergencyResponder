@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\RolePermissionRequest;
+use App\Http\Requests\RoleRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Redirect;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
@@ -12,54 +18,72 @@ class RoleController extends Controller
      */
     public function index(): View
     {
-        return view('admin.roles');
-    }
+        $roles = Role::all();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view('admin.roles', compact('roles'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request): RedirectResponse
     {
-        //
+        Role::create($request->validated());
+
+        \toastr()->success('Role added successfully');
+
+        return redirect()->route('roles.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Role $role): View
     {
-        //
-    }
+        $role->load('permissions');
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $permissions = Permission::all();
+
+        return view('admin.roles-show', compact('role', 'permissions'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(RoleRequest $request, Role $role): RedirectResponse
     {
-        //
+        $role->update($request->validated());
+
+        \toastr()->success('Role updated successfully');
+
+        return redirect()->route('roles.show', $role->id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Role $role): RedirectResponse
     {
-        //
+        if($role->hasAnyPermission(Permission::all())) {
+            throw ValidationException::withMessages(['error' => 'The role is being use']);
+        }
+
+        $role->delete();
+
+        \toastr()->success('Deleted role successfully');
+
+        return redirect()->route('roles.index');
+    }
+
+    /**
+     * Store permissions in roles
+     */
+    public function storePermissions(RolePermissionRequest $request, Role $role): RedirectResponse
+    {
+        $role->syncPermissions($request->permissions);
+
+        \toastr()->success('Role permissions update successfully');
+
+        return redirect()->back();
     }
 }

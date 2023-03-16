@@ -1,3 +1,13 @@
+@php
+    $modalData = [
+        'modalId' => 'createPermissionModal',
+        'modalTitle' => 'Create Permission',
+        'route' => route('permissions.store'),
+        'putMethod' => false,
+        'modalSaveButton' => 'Create',
+    ]
+@endphp
+
 @extends('layouts.admin-home')
 
 @section('title')
@@ -18,8 +28,9 @@
         @forelse ($permissions as $permission)
             <div class="col-md-4">
                 <div class="card border border-primary">
-                    <div class="card-body">
-                        {{ $permission->name }}
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>{{ str_title($permission->name) }}</div>
+                        <a href="{{ route('permissions.show', $permission->id) }}" class="btn btn-primary">View</a>
                     </div>
                 </div>
             </div>
@@ -28,5 +39,5 @@
         @endforelse
     </div>
 
-    @include('components.modals.permissions-create')
+    @include('components.modals.roles-permissions-create', $modalData)
 @endsection

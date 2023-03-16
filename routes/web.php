@@ -22,8 +22,9 @@ Route::get('/', function () {
 
 Route::prefix('admin')->middleware(['role:admin', 'auth'])->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admins.index');
-    Route::resource('roles', RoleController::class);
-    Route::resource('permissions', PermissionController::class)->except(['create']);
+    Route::resource('roles', RoleController::class)->except(['create', 'edit']);
+    Route::resource('permissions', PermissionController::class)->except(['create', 'edit']);
+    Route::post('roles/{role}/permissions', [RoleController::class, 'storePermissions'])->name('roles.permissions.store');
 });
 
 // Route::get('test', function () {

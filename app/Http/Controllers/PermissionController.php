@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PermissionRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use Redirect;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class PermissionController extends Controller
 {
@@ -16,7 +16,7 @@ class PermissionController extends Controller
      */
     public function index(): View
     {
-        $permissions = Permission::query()->latest()->paginate(10);
+        $permissions = Permission::all();
 
         return view('admin.permissions', compact('permissions'));
     }
@@ -28,38 +28,46 @@ class PermissionController extends Controller
     {
         Permission::create($request->validated());
 
-        return redirect()->route('permissions.index')->withSuccess('Added permission successfully');
+        \toastr()->success('Permission added successfully');
+
+        return redirect()->route('permissions.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Permission $permission): View
     {
-        //
-    }
+        $permission->load('roles');
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return view('admin.permissions-show', compact('permission'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PermissionRequest $request, Permission $permission): RedirectResponse
     {
-        //
+        $permission->update($request->validated());
+
+        \toastr()->success('Permission updated successfully');
+
+        return redirect()->route('permissions.show', $permission->id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Permission $permission): RedirectResponse
     {
-        //
+        if($permission->hasAnyRole(Role::all())) {
+            throw ValidationException::withMessages(['error' => 'The permission is being used']);
+        }
+
+        $permission->delete();
+
+        \toastr()->success('Permission deleted successfully');
+
+        return redirect()->route('permissions.index');
     }
 }

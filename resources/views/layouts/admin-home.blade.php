@@ -11,6 +11,9 @@
 </head>
 
 <body>
+    @if ($withToast ?? true)
+        @include('components.toastr')
+    @endif
     <div class="page">
     <!-- Sidebar -->
     @include('components.nav.admin')
