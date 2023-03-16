@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use \Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Validator;
 
-class PermissionRequest extends FormRequest
+class RoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,8 @@ class PermissionRequest extends FormRequest
      */
     public function rules(): array
     {
-        // unique:permissions,name
         return [
-            'name' => ['required', 'max:255', 'unique:'.config('permission.table_names.permissions').',name']
+            'name' => ['required', 'max:255', 'unique:'. config('permission.table_names.roles').',name' ]
         ];
     }
 
