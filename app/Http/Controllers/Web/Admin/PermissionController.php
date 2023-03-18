@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\PermissionRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
@@ -60,7 +61,7 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission): RedirectResponse
     {
-        if($permission->hasAnyRole(Role::all())) {
+        if ($permission->hasAnyRole(Role::all())) {
             throw ValidationException::withMessages(['error' => 'The permission is being used']);
         }
 

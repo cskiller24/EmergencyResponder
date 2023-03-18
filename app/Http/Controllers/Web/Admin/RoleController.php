@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\RolePermissionRequest;
 use App\Http\Requests\RoleRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use Redirect;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -64,7 +64,7 @@ class RoleController extends Controller
      */
     public function destroy(Role $role): RedirectResponse
     {
-        if($role->hasAnyPermission(Permission::all())) {
+        if ($role->hasAnyPermission(Permission::all())) {
             throw ValidationException::withMessages(['error' => 'The role is being use']);
         }
 
