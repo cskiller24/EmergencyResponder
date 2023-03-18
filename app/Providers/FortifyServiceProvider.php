@@ -36,10 +36,6 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.login');
         });
 
-        Fortify::registerView(function () {
-            return view('auth.register');
-        });
-
         Fortify::requestPasswordResetLinkView(function () {
             return view('auth.forgot-password');
         });
@@ -61,6 +57,11 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->singleton(
             \Laravel\Fortify\Contracts\LoginResponse::class,
             \App\Actions\Fortify\LoginResponse::class
+        );
+
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\RegisterResponse::class,
+            \App\Actions\Fortify\RegisterResponse::class
         );
 
         // $this->app->singleton(
