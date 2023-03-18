@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use \Illuminate\Contracts\Validation\Validator;
 
 class PermissionRequest extends FormRequest
 {
@@ -24,7 +24,7 @@ class PermissionRequest extends FormRequest
     {
         // unique:permissions,name
         return [
-            'name' => ['required', 'max:255', 'unique:'.config('permission.table_names.permissions').',name']
+            'name' => ['required', 'max:255', 'unique:'.config('permission.table_names.permissions').',name'],
         ];
     }
 
@@ -37,10 +37,10 @@ class PermissionRequest extends FormRequest
 
     protected function snakeName(): void
     {
-        if($this->request->has('name')) {
+        if ($this->request->has('name')) {
             $this->merge([
-                'name' => str_snake($this->request->get('name'))
+                'name' => str_snake($this->request->get('name')),
             ]);
-        };
+        }
     }
 }

@@ -23,7 +23,7 @@ class RolePermissionRequest extends FormRequest
     {
         return [
             'permissions' => ['required', 'array'],
-            'permissions.*' => ['exists:'.config('permission.table_names.permissions').',name']
+            'permissions.*' => ['exists:'.config('permission.table_names.permissions').',name'],
         ];
     }
 }
