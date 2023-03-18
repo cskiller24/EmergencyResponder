@@ -9,6 +9,7 @@
                 EResponder
             </a>
         </h1>
+
         <div class="navbar-nav flex-row d-lg-none">
             <div class="nav-item d-none d-lg-flex me-3">
                 <div class="btn-list">
@@ -218,6 +219,7 @@
                         </span>
                     </a>
                 </li>
+                <div class="hr-text text-light mt-3 mb-1">Users</div>
                 <li @class(['nav-item', 'active' => route_named('')])>
                     <a class="nav-link" href="#">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -255,6 +257,26 @@
                         </span>
                     </a>
                 </li>
+                <li @class(['nav-item', 'active' => route_named('invites.index')])>
+                    <a class="nav-link" href="{{ route('invites.index') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail-forward"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M12 18h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5"></path>
+                                <path d="M3 6l9 6l9 -6"></path>
+                                <path d="M15 18h6"></path>
+                                <path d="M18 15l3 3l-3 3"></path>
+                            </svg>
+                        </span>
+                        <span class="nav-link-title">
+                            Invitations
+                        </span>
+                    </a>
+                </li>
+                <div class="hr-text text-light mt-3 mb-1">Core</div>
                 <li class="nav-item">
                     <a class="nav-link" href="#">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -294,8 +316,8 @@
                         </span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
+                <li @class(['nav-item', 'active' => route_named('emergency-types.index')])>
+                    <a class="nav-link" href="{{ route('emergency-types.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-circle"
@@ -312,6 +334,7 @@
                         </span>
                     </a>
                 </li>
+                <div class="hr-text text-light mt-3 mb-1">Authorizations</div>
                 <li @class(['nav-item', 'active' => route_named('roles.index')])>
                     <a class="nav-link" href="{{ route('roles.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
