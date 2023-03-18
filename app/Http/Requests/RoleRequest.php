@@ -23,7 +23,7 @@ class RoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'max:255', 'unique:'. config('permission.table_names.roles').',name' ]
+            'name' => ['required', 'max:255', 'unique:'.config('permission.table_names.roles').',name'],
         ];
     }
 
@@ -36,10 +36,10 @@ class RoleRequest extends FormRequest
 
     protected function snakeName(): void
     {
-        if($this->request->has('name')) {
+        if ($this->request->has('name')) {
             $this->merge([
-                'name' => str_snake($this->request->get('name'))
+                'name' => str_snake($this->request->get('name')),
             ]);
-        };
+        }
     }
 }

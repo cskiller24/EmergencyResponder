@@ -18,7 +18,7 @@
                             type="text"
                             name="name"
                             id="permission-name"
-                            @class(['form-control', 'is-invalid' => $errors->has('errors')])
+                            @class(['form-control', 'is-invalid' => $errors->has('name')])
                             @if ($putMethod ?? null)
                                 value="{{ $updateValue }}"
                             @else

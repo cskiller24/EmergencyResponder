@@ -5,7 +5,7 @@
  * (c) Younes KHOUBZA <younes.khoubza@gmail.com>
  */
 
-return array(
+return [
     /*
     |--------------------------------------------------------------------------
     | Toastr options
@@ -29,9 +29,9 @@ return array(
         'newestOnTop' => true,
         'progressBar' => true,
         'preventDuplicates' => true,
-        'hideDuration'      => 1000,
-        'hideEasing'        => 'linear',
-        'hideMethod'        => 'fadeOut',
-        'toastClass'        => 'toastr'
+        'hideDuration' => 1000,
+        'hideEasing' => 'linear',
+        'hideMethod' => 'fadeOut',
+        'toastClass' => 'toastr',
     ],
-);
+];
