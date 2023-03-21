@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\Admin\InviteController;
 use App\Http\Controllers\Web\Admin\PermissionController;
 use App\Http\Controllers\Web\Admin\RoleController;
 use App\Http\Controllers\Web\Auth\RegisterController;
+use App\Http\Controllers\Web\UserController;
 use App\Mail\SendInvite;
 use App\Models\Invite;
 use Illuminate\Support\Facades\Route;
@@ -31,8 +32,8 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register')
 Route::prefix('admin')->middleware(['role:admin', 'auth'])->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admins.index');
     Route::resource('roles', RoleController::class)->except(['create', 'edit']);
-    Route::resource('permissions', PermissionController::class)->except(['create', 'edit']);
     Route::post('roles/{role}/permissions', [RoleController::class, 'storePermissions'])->name('roles.permissions.store');
+    Route::resource('permissions', PermissionController::class)->except(['create', 'edit']);
     Route::resource('emergency-types', EmergencyTypeController::class)->except(['create', 'edit']);
 
     // Invites
@@ -42,7 +43,13 @@ Route::prefix('admin')->middleware(['role:admin', 'auth'])->group(function () {
     Route::post('/invites/{invite:code}', [InviteController::class, 'process'])->name('invites.register');
     Route::post('/invites/{invite:code}/resend', [InviteController::class, 'resend'])->name('invites.resend');
     Route::delete('/invites/{invite:code}', [InviteController::class, 'destroy'])->name('invites.destroy');
+
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 });
+
+Route::get('/settings')->middleware('auth')->name('settings.show');
+Route::put('/settings')->middleware('auth')->name('settings.update');
 
 Route::get('test', function () {
     return new SendInvite(Invite::factory()->create());

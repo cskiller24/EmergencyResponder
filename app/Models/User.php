@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Scopes\Searchable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,7 +15,19 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasUuids, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids, HasRoles, Searchable;
+
+    protected array $searchable = [
+        'columns' => [
+            'users.email' => 15,
+            'users.name' => 10,
+            'roles.name' => 20,
+        ],
+        'joins' => [
+            'model_has_roles' => ['model_has_roles.model_id', 'users.id'],
+            'roles' => ['roles.id','model_has_roles.role_id'],
+        ],
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -39,14 +52,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    // Modify or extend process
-    // protected static function boot()
-    // {
-    //     static::creating(function ($user) {
-    //         $user->assignRole('user');
-    //     });
-    // }
 
     // Relationships
     public function monitors(): HasMany
