@@ -2,7 +2,7 @@
     $modalData = [
         'modalId' => 'updateRoleModal',
         'modalTitle' => 'Edit Role',
-        'route' => route('roles.update', $role->id),
+        'route' => route('admin.roles.update', $role->id),
         'putMethod' => true,
         'updateValue' => $role->name,
         'modalSaveButton' => 'Update',
@@ -11,7 +11,7 @@
     $modalDelete = [
         'modalId' => 'deleteRoleModal',
         'modalTitle' => 'Are you sure you want to delete ' . str_title($role->name) . ' role?',
-        'route' => route('roles.destroy', $role->id),
+        'route' => route('admin.roles.destroy', $role->id),
         'modalDeleteButton' => 'Delete role',
     ];
 @endphp
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <form action="{{ route('roles.permissions.store', $role->id) }}" method="post" >
+    <form action="{{ route('admin.roles.permissions.store', $role->id) }}" method="post" >
         @csrf
 
         <input type="submit" class="btn btn-success w-100 mt-3" value="Save permissions">

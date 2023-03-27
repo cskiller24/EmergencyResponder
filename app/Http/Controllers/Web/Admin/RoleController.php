@@ -32,7 +32,7 @@ class RoleController extends Controller
 
         \toastr()->success('Role added successfully');
 
-        return redirect()->route('roles.index');
+        return redirect()->route('admin.roles.index');
     }
 
     /**
@@ -56,7 +56,7 @@ class RoleController extends Controller
 
         \toastr()->success('Role updated successfully');
 
-        return redirect()->route('roles.show', $role->id);
+        return redirect()->route('admin.roles.show', $role->id);
     }
 
     /**
@@ -72,7 +72,7 @@ class RoleController extends Controller
 
         \toastr()->success('Deleted role successfully');
 
-        return redirect()->route('roles.index');
+        return redirect()->route('admin.roles.index');
     }
 
     /**

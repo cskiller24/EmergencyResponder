@@ -22,14 +22,6 @@ class EmergencyTypeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $this->authorize('create', EmergencyType::class);
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(EmergencyTypeRequest $request): RedirectResponse
@@ -40,7 +32,7 @@ class EmergencyTypeController extends Controller
 
         \toastr()->success('Added emergency type successfully!');
 
-        return redirect()->route('emergency-types.index');
+        return redirect()->route('admin.emergency-types.index');
     }
 
     /**
@@ -64,7 +56,7 @@ class EmergencyTypeController extends Controller
 
         \toastr()->success('Emergency type updated successfully');
 
-        return redirect()->route('emergency-types.show', $emergencyType->id);
+        return redirect()->route('admin.emergency-types.show', $emergencyType->id);
     }
 
     /**
@@ -82,6 +74,6 @@ class EmergencyTypeController extends Controller
 
         \toastr()->success('Emergency type successfully deleted');
 
-        return redirect()->route('emergency-types.index');
+        return redirect()->route('admin.emergency-types.index');
     }
 }

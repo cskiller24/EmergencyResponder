@@ -2,7 +2,7 @@
     $modalData = [
         'modalId' => 'updatePermissionModal',
         'modalTitle' => 'Edit Permission',
-        'route' => route('permissions.update', $permission->id),
+        'route' => route('admin.permissions.update', $permission->id),
         'putMethod' => true,
         'updateValue' => $permission->name,
         'modalSaveButton' => 'Update',
@@ -11,7 +11,7 @@
     $modalDelete = [
         'modalId' => 'deletePermissionModal',
         'modalTitle' => 'Are you sure you want to delete '.str_title($permission->name).' permission?',
-        'route' => route('permissions.destroy', $permission->id),
+        'route' => route('admin.permissions.destroy', $permission->id),
         'modalDeleteButton' => 'Delete permission'
     ]
 @endphp

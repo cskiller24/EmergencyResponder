@@ -14,6 +14,8 @@ class UserController extends Controller
      */
     public function index(): View
     {
+        $this->authorize('viewAny', User::class);
+
         $users = User::with('roles')->search(request('s'))->get();
         $users = $users->filter(fn (User $user) => $user->email !== auth()->user()->email);
         $usersCount = User::all()->count();
@@ -34,6 +36,8 @@ class UserController extends Controller
      */
     public function show(User $user): View
     {
+        $this->authorize('view', User::class);
+
         $roles = $user->getRoleNames();
 
         return view('admin.users-show', compact('user', 'roles'));
@@ -42,9 +46,9 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+        $this->authorize('user_show', User::class);
     }
 
     /**
@@ -52,7 +56,7 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->authorize('update', User::class);
     }
 
     /**

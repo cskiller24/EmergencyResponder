@@ -14,7 +14,7 @@
         <p>Number of users: <strong>{{ $usersCount }}</strong></p>
     </div>
     <form
-        action="{{ route('users.index') }}"
+        action="{{ route('admin.users.index') }}"
         method="get"
     >
         <div class="my-2 row">

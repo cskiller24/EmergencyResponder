@@ -2,7 +2,7 @@
     $modalData = [
         'modalId' => 'updateEmergencyTypeModal',
         'modalTitle' => 'Edit Emergency Type',
-        'route' => route('emergency-types.update', $emergencyType->id),
+        'route' => route('admin.emergency-types.update', $emergencyType->id),
         'putMethod' => true,
         'nameValue' => $emergencyType->name,
         'descriptionValue' => $emergencyType->description,
@@ -12,7 +12,7 @@
     $modalDelete = [
         'modalId' => 'deleteEmergencyTypeModal',
         'modalTitle' => 'Are you sure you want to delete ' . $emergencyType->name . ' emergency type?',
-        'route' => route('emergency-types.destroy', $emergencyType->id),
+        'route' => route('admin.emergency-types.destroy', $emergencyType->id),
         'modalDeleteButton' => 'Delete emergency type',
     ];
 @endphp

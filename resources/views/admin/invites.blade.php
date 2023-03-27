@@ -42,7 +42,7 @@
                                 <td>{{ $invite->code }}</td>
                                 <td>{{ str_title($invite->role) }}</td>
                                 <td class="justify-content-between">
-                                    <form action="{{ route('invites.resend', $invite->code) }}" method="post">
+                                    <form action="{{ route('admin.invites.resend', $invite->code) }}" method="post">
                                         @csrf
                                         <button class="btn btn-primary" type="submit">
                                             <svg xmlns="http://www.w3.org/2000/svg"

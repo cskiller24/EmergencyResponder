@@ -5,7 +5,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <h1 class="navbar-brand navbar-brand-autodark">
-            <a href="{{ route('admins.index') }}" class="h2">
+            <a href="{{ route('admin.index') }}" class="h2">
                 EResponder
             </a>
         </h1>
@@ -201,8 +201,8 @@
         </div>
         <div class="collapse navbar-collapse" id="sidebar-menu">
             <ul class="navbar-nav pt-lg-3">
-                <li @class(['nav-item', 'active' => route_named('admins.index')])>
-                    <a class="nav-link" href="{{ route('admins.index') }}">
+                <li @class(['nav-item', 'active' => route_named('admin.index')])>
+                    <a class="nav-link" href="{{ route('admin.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/home -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
@@ -220,8 +220,8 @@
                     </a>
                 </li>
                 <div class="hr-text text-light mt-3 mb-1">Users</div>
-                <li @class(['nav-item', 'active' => route_named('users.index')]) >
-                    <a class="nav-link" href="{{ route('users.index') }}">
+                <li @class(['nav-item', 'active' => route_named('admin.users.index')]) >
+                    <a class="nav-link" href="{{ route('admin.users.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user"
@@ -237,8 +237,8 @@
                         </span>
                     </a>
                 </li>
-                <li @class(['nav-item', 'active' => route_named('invites.index')])>
-                    <a class="nav-link" href="{{ route('invites.index') }}">
+                <li @class(['nav-item', 'active' => route_named('admin.invites.index')])>
+                    <a class="nav-link" href="{{ route('admin.invites.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail-forward"
@@ -296,8 +296,8 @@
                         </span>
                     </a>
                 </li>
-                <li @class(['nav-item', 'active' => route_named('emergency-types.index')])>
-                    <a class="nav-link" href="{{ route('emergency-types.index') }}">
+                <li @class(['nav-item', 'active' => route_named('admin.emergency-types.index')])>
+                    <a class="nav-link" href="{{ route('admin.emergency-types.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-circle"
@@ -315,8 +315,8 @@
                     </a>
                 </li>
                 <div class="hr-text text-light mt-3 mb-1">Authorizations</div>
-                <li @class(['nav-item', 'active' => route_named('roles.index')])>
-                    <a class="nav-link" href="{{ route('roles.index') }}">
+                <li @class(['nav-item', 'active' => route_named('admin.roles.index')])>
+                    <a class="nav-link" href="{{ route('admin.roles.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check"
@@ -333,8 +333,8 @@
                         </span>
                     </a>
                 </li>
-                <li @class(['nav-item', 'active' => route_named('permissions.index')])>
-                    <a class="nav-link" href="{{ route('permissions.index') }}">
+                <li @class(['nav-item', 'active' => route_named('admin.permissions.index')])>
+                    <a class="nav-link" href="{{ route('admin.permissions.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-lock-check"

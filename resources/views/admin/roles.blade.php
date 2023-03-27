@@ -2,7 +2,7 @@
     $modalData = [
         'modalId' => 'createRoleModal',
         'modalTitle' => 'Create Role',
-        'route' => route('roles.store'),
+        'route' => route('admin.roles.store'),
         'putMethod' => false,
         'modalSaveButton' => 'Create',
     ]
@@ -31,7 +31,7 @@
                 <div class="card border border-primary">
                     <div class="card-body d-flex justify-content-between align-items-center">
                         <div>{{ str_title($role->name) }}</div>
-                        <a href="{{ route('roles.show', $role->id) }}" class="btn btn-primary">View</a>
+                        <a href="{{ route('admin.roles.show', $role->id) }}" class="btn btn-primary">View</a>
                     </div>
                 </div>
             </div>

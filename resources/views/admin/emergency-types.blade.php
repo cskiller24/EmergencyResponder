@@ -2,7 +2,7 @@
     $createModal = [
         'modalId' => 'createEmergencyTypeModal',
         'modalTitle' => 'Create Emergency Type',
-        'route' => route('emergency-types.store'),
+        'route' => route('admin.emergency-types.store'),
         'modalSaveButton' => 'Create'
     ]
 @endphp
@@ -29,7 +29,7 @@
             <div class="card border border-primary">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>{{ $emergencyType->name }}</div>
-                    <a href="{{ route('emergency-types.show', $emergencyType->id) }}" class="btn btn-primary">View</a>
+                    <a href="{{ route('admin.emergency-types.show', $emergencyType->id) }}" class="btn btn-primary">View</a>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@
     $modalData = [
         'modalId' => 'createPermissionModal',
         'modalTitle' => 'Create Permission',
-        'route' => route('permissions.store'),
+        'route' => route('admin.permissions.store'),
         'putMethod' => false,
         'modalSaveButton' => 'Create',
     ]
@@ -30,7 +30,7 @@
                 <div class="card border border-primary">
                     <div class="card-body d-flex justify-content-between align-items-center">
                         <div>{{ str_title($permission->name) }}</div>
-                        <a href="{{ route('permissions.show', $permission->id) }}" class="btn btn-primary">View</a>
+                        <a href="{{ route('admin.permissions.show', $permission->id) }}" class="btn btn-primary">View</a>
                     </div>
                 </div>
             </div>
