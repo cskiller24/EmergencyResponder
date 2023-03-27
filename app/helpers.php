@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\SubmissionStatusEnum;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Str;
@@ -47,5 +48,15 @@ if (! function_exists('str_snake')) {
     function str_snake(string $string): string
     {
         return Str::snake($string);
+    }
+}
+
+if(! function_exists('parse_status')) {
+    /**
+     * Cast the submission status cases
+     */
+    function parse_status(int $status): string
+    {
+        return SubmissionStatusEnum::tryFrom($status)?->titleCase();
     }
 }
