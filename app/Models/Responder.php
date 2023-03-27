@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Responder extends Model
@@ -34,5 +35,10 @@ class Responder extends Model
     public function emergencyType(): BelongsTo
     {
         return $this->belongsTo(EmergencyType::class);
+    }
+
+    public function contacts(): MorphMany
+    {
+        return $this->morphMany(Contact::class, 'contactable');
     }
 }

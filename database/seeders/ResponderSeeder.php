@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Contact;
 use App\Models\EmergencyType;
 use App\Models\Location;
 use App\Models\RelatedLink;
@@ -20,6 +21,7 @@ class ResponderSeeder extends Seeder
             ->has(Location::factory())
             ->has(RelatedLink::factory())
             ->has(EmergencyType::factory())
+            ->has(Contact::factory())
             ->create();
     }
 }

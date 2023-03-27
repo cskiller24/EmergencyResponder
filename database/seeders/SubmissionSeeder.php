@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Contact;
 use App\Models\EmergencyType;
 use App\Models\Location;
 use App\Models\RelatedLink;
@@ -24,17 +25,18 @@ class SubmissionSeeder extends Seeder
             $submission = Submission::factory()
                 ->has(Location::factory())
                 ->has(RelatedLink::factory())
-                ->has(EmergencyType::factory());
+                ->has(EmergencyType::factory())
+                ->has(Contact::factory());
 
             if (mt_rand(0, 1) === 1) {
                 $moderatorsId = $moderators->random()->take(1)->pluck('id')[0];
                 $submission->create([
                     'monitored_by' => $moderatorsId,
-                    'submitter_email' => $user->email,
+                    'submitted_by' => $user->id,
                 ]);
             } else {
                 $submission->create([
-                    'submitter_email' => $user->email,
+                    'submitted_by' => $user->id,
                 ]);
             }
         });
