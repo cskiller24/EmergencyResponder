@@ -20,9 +20,9 @@ class SubmissionFactory extends Factory
     public function definition(): array
     {
         return [
-            'submitter_email' => fake()->safeEmail(),
+            'submitted_by' => User::factory(),
             'submitter_notify' => (bool) mt_rand(0, 1),
-            'status' => mt_rand(1, 3), // to update
+            'status' => mt_rand(1, 4), // to update
             'name' => fake()->sentence(),
             'description' => fake()->sentences(3, true),
             'monitored_by' => User::factory(),

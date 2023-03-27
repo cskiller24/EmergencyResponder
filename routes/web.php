@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\Admin\InviteController;
 use App\Http\Controllers\Web\Admin\PermissionController;
 use App\Http\Controllers\Web\Admin\RoleController;
 use App\Http\Controllers\Web\Auth\RegisterController;
+use App\Http\Controllers\Web\Moderator\SubmissionController;
 use App\Http\Controllers\Web\UserController;
 use App\Mail\SendInvite;
 use App\Models\Invite;
@@ -29,8 +30,8 @@ Route::get('/', function () {
 Route::get('/register', [RegisterController::class, 'create'])->name('register')->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store'])->name('register')->middleware('guest');
 
-Route::prefix('admin')->middleware(['role:admin', 'auth'])->group(function () {
-    Route::get('/', [AdminController::class, 'index'])->name('admins.index');
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin'], 'as' => 'admin.'], function () {
+    Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::resource('roles', RoleController::class)->except(['create', 'edit']);
     Route::post('roles/{role}/permissions', [RoleController::class, 'storePermissions'])->name('roles.permissions.store');
     Route::resource('permissions', PermissionController::class)->except(['create', 'edit']);
@@ -39,8 +40,6 @@ Route::prefix('admin')->middleware(['role:admin', 'auth'])->group(function () {
     // Invites
     Route::get('/invites', [InviteController::class, 'index'])->name('invites.index');
     Route::post('/invites', [InviteController::class, 'store'])->name('invites.store');
-    Route::get('/invites/accept/{invite:code}', [InviteController::class, 'accept'])->name('invites.accept');
-    Route::post('/invites/{invite:code}', [InviteController::class, 'process'])->name('invites.register');
     Route::post('/invites/{invite:code}/resend', [InviteController::class, 'resend'])->name('invites.resend');
     Route::delete('/invites/{invite:code}', [InviteController::class, 'destroy'])->name('invites.destroy');
 
@@ -48,8 +47,23 @@ Route::prefix('admin')->middleware(['role:admin', 'auth'])->group(function () {
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 });
 
-Route::get('/settings')->middleware('auth')->name('settings.show');
-Route::put('/settings')->middleware('auth')->name('settings.update');
+Route::get('/invites/accept/{invite:code}', [InviteController::class, 'accept'])->name('invites.accept');
+Route::post('/invites/{invite:code}', [InviteController::class, 'process'])->name('invites.register');
+
+Route::get('/settings', [UserController::class, 'edit'])->middleware('auth')->name('settings.show');
+Route::put('/settings', [UserController::class, 'update'])->middleware('auth')->name('settings.update');
+
+Route::group(['prefix' => 'moderator', 'middleware' => ['auth', 'role:moderator'], 'as' => 'moderator.'], function () {
+    Route::get('/', function () {
+        return view('moderator.index');
+    })->name('index');
+
+    Route::get('/submissions', [SubmissionController::class, 'index'])->name('submissions.index');
+});
+
+Route::group(['prefix' => 'user', 'middleware' => ['role:user', 'auth']], function() {
+
+});
 
 Route::get('test', function () {
     return new SendInvite(Invite::factory()->create());

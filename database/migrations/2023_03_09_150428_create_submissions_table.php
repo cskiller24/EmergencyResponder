@@ -17,12 +17,12 @@ return new class extends Migration
             $table->longText('description');
             $table->integer('status');
             $table->boolean('submitter_notify')->default(false);
-            $table->string('submitter_email')->nullable();
-            $table->foreignUuid('monitored_by')->constrained('users');
+            $table->foreignUuid('submitted_by')->constrained('users');
+            $table->foreignUuid('monitored_by')->nullable()->constrained('users');
             $table->foreignUuid('emergency_type_id')->constrained();
             $table->timestamps();
 
-            $table->index(['monitored_by', 'emergency_type_id', 'id']);
+            $table->index(['monitored_by', 'emergency_type_id', 'id', 'submitted_by']);
         });
     }
 
