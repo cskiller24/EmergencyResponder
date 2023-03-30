@@ -22,7 +22,7 @@ class RelatedLinkFactory extends Factory
         return [
             'related_linkable_id' => fake()->randomDigit(),
             'related_linkable_type' => Str::random(15),
-            'link' => Str::slug(fake()->sentences(3, true)),
+            'link' => fake()->url(),
         ];
     }
 

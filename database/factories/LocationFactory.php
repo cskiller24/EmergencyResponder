@@ -24,7 +24,7 @@ class LocationFactory extends Factory
             'latitude' => fake()->latitude(),
             'longitude' => fake()->longitude(),
             'line' => fake()->streetAddress(),
-            'zip' => fake()->countryCode(),
+            'zip' => mt_rand(1000, 7123),
             'region' => fake()->word(),
             'city' => fake()->city(),
             'country' => fake()->country(),
