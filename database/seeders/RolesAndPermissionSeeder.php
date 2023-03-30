@@ -96,7 +96,6 @@ class RolesAndPermissionSeeder extends Seeder
             'submission_show',
             'approve_deny_submissions',
             'related_link_update',
-            'approve_deny_submissions',
             'user_show',
         ];
 
