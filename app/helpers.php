@@ -3,6 +3,7 @@
 use App\Enums\SubmissionStatusEnum;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 if (! function_exists('redirectRole')) {
@@ -58,5 +59,27 @@ if(! function_exists('parse_status')) {
     function parse_status(int $status): string
     {
         return SubmissionStatusEnum::tryFrom($status)?->titleCase();
+    }
+}
+
+if(! function_exists('validatePerPage')) {
+    /**
+     * Validate the per page get request in pagination
+     */
+    function validatePerPage(string|int $page = null, int $default = 10): int
+    {
+        if(! $page) {
+            $page = request('p');
+        }
+
+        if(! is_numeric($page)) {
+            return $default;
+        }
+
+        if(! in_array((int) $page, [10, 20, 30])) {
+            return $default;
+        }
+
+        return $page;
     }
 }
