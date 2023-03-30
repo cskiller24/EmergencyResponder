@@ -30,4 +30,36 @@ enum SubmissionStatusEnum: int
             static::DECLINED => 'Declined'
         };
     }
+
+    public function isDraft(): bool
+    {
+        return match($this) {
+            static::DRAFT => true,
+            default => false
+        };
+    }
+
+    public function isSubmitted(): bool
+    {
+        return match($this) {
+            static::SUBMITTED => true,
+            default => false
+        };
+    }
+
+    public function isApproved(): bool
+    {
+        return match($this) {
+            static::APPROVED => true,
+            default => false
+        };
+    }
+
+    public function isDeclined(): bool
+    {
+        return match($this) {
+            static::DECLINED => true,
+            default => false
+        };
+    }
 }

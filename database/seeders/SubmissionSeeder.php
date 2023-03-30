@@ -24,9 +24,9 @@ class SubmissionSeeder extends Seeder
             // If the user is monitored
             $submission = Submission::factory()
                 ->has(Location::factory())
-                ->has(RelatedLink::factory())
+                ->has(RelatedLink::factory()->count(mt_rand(1,3)))
                 ->has(EmergencyType::factory())
-                ->has(Contact::factory());
+                ->has(Contact::factory()->count(mt_rand(1,3)));
 
             if (mt_rand(0, 1) === 1) {
                 $moderatorsId = $moderators->random()->take(1)->pluck('id')[0];

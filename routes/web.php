@@ -30,6 +30,7 @@ Route::get('/', function () {
 Route::get('/register', [RegisterController::class, 'create'])->name('register')->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store'])->name('register')->middleware('guest');
 
+// Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin'], 'as' => 'admin.'], function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::resource('roles', RoleController::class)->except(['create', 'edit']);
@@ -47,23 +48,28 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin'], 'as' 
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 });
 
-Route::get('/invites/accept/{invite:code}', [InviteController::class, 'accept'])->name('invites.accept');
-Route::post('/invites/{invite:code}', [InviteController::class, 'process'])->name('invites.register');
-
-Route::get('/settings', [UserController::class, 'edit'])->middleware('auth')->name('settings.show');
-Route::put('/settings', [UserController::class, 'update'])->middleware('auth')->name('settings.update');
-
+// Moderator
 Route::group(['prefix' => 'moderator', 'middleware' => ['auth', 'role:moderator'], 'as' => 'moderator.'], function () {
     Route::get('/', function () {
         return view('moderator.index');
     })->name('index');
 
     Route::get('/submissions', [SubmissionController::class, 'index'])->name('submissions.index');
+    Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('submissions.show');
 });
 
-Route::group(['prefix' => 'user', 'middleware' => ['role:user', 'auth']], function() {
+// User
+Route::group(['prefix' => 'user', 'middleware' => ['role:user', 'auth'], 'as' => 'user.'], function() {
+    Route::get('/', function () {
 
+    });
 });
+
+Route::get('/invites/accept/{invite:code}', [InviteController::class, 'accept'])->name('invites.accept');
+Route::post('/invites/{invite:code}', [InviteController::class, 'process'])->name('invites.register');
+
+Route::get('/settings', [UserController::class, 'edit'])->middleware('auth')->name('settings.show');
+Route::put('/settings', [UserController::class, 'update'])->middleware('auth')->name('settings.update');
 
 Route::get('test', function () {
     return new SendInvite(Invite::factory()->create());

@@ -4,8 +4,15 @@ namespace App\Http\Controllers\Web\Moderator;
 
 use App\Enums\SubmissionStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SubmissionRequest;
+use App\Http\Requests\SubmissionUpdateRequest;
+use App\Models\Location;
+use App\Models\RelatedLink;
 use App\Models\Submission;
+use DB;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -16,41 +23,71 @@ class SubmissionController extends Controller
      */
     public function index(): View
     {
-        $submissions = Submission::with(['location', 'monitoredBy', 'emergencyType', 'contacts'])
+        $this->authorize('viewAny', Submission::class);
+
+        $submissions = Submission::query()
             ->when(request('s'), function (Builder $q) {
                 $q->search(request('s'));
             })
-            ->when(request('filter') && SubmissionStatusEnum::tryFrom(request('filter'))?->titleCase(), function (Builder $q) {
+            ->when(request('f') && SubmissionStatusEnum::tryFrom(request('f'))?->titleCase(), function (Builder $q) {
                 $q->where('status', request('filter'));
             })
-            ->get();
-        $submissionsCount = Submission::query()->count();
+            ->with(['location', 'monitoredBy', 'emergencyType', 'contacts', 'submittedBy'])
+            ->paginate(validatePerPage());
+        $submissionsCount = cache()->remember('submissions-count', now()->addMinutes(30), fn () => Submission::query()->count());
         $statuses = SubmissionStatusEnum::cases();
+
         return view('moderator.submissions', compact('submissions', 'submissionsCount', 'statuses'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        //
+        $this->authorize('store', Submission::class);
+
+        return view('');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SubmissionRequest $request): RedirectResponse
     {
-        //
+        $this->authorize('store', Submission::class);
+
+        DB::beginTransaction();
+        try {
+            $submissionFillables = app(Submission::class)->getFillable();
+            $relatedLinkFillables = app(RelatedLink::class)->getFillable();
+            $locationFillables = app(Location::class)->getFillable();
+
+            $submission = Submission::query()->create($request->only($submissionFillables));
+            $submission->location()->create($request->only($locationFillables));
+            $submission->contacts()->createMany($request->only($locationFillables));
+            $submission->relatedLinks()->createMany($request->only($relatedLinkFillables));
+
+            DB::commit();
+            \toastr()->success('Submission added successfully');
+        } catch (QueryException $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
+        return redirect()->route('/');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Submission $submission): View
     {
-        //
+        $this->authorize('view', $submission);
+
+        $submission->load(['location', 'monitoredBy', 'emergencyType', 'contacts', 'submittedBy', 'relatedLinks']);
+
+        return view('moderator.submissions-show', compact('submission'));
     }
 
     /**
@@ -64,9 +101,19 @@ class SubmissionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SubmissionUpdateRequest $request, Submission $submission): RedirectResponse
     {
-        //
+        if($request->status === SubmissionStatusEnum::DRAFT) {
+            $this->authorize('submission->update');
+
+            $submission->update($request->validated());
+        }
+
+        if($request->status === SubmissionStatusEnum::APPROVED) {
+            $this->authorize('approveDenySubmission', Submission::class);
+
+            return $this->approveSubmission($request, $submission);
+        }
     }
 
     /**
@@ -75,5 +122,10 @@ class SubmissionController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    private function approveSubmission(SubmissionUpdateRequest $request, Submission $submission): RedirectResponse
+    {
+
     }
 }
