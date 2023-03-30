@@ -24,4 +24,15 @@ class Location extends Model
     {
         return $this->morphTo();
     }
+
+    public function fullAddress(): string
+    {
+        return sprintf('%s, %s %s, %s %s',
+            $this->line,
+            $this->city,
+            $this->region,
+            $this->country,
+            $this->zip
+        );
+    }
 }

@@ -27,9 +27,9 @@ class Responder extends Model
         return $this->morphOne(Location::class, 'locatable');
     }
 
-    public function relatedLink(): MorphOne
+    public function relatedLinks(): MorphMany
     {
-        return $this->morphOne(RelatedLink::class, 'related_linkable');
+        return $this->morphMany(RelatedLink::class, 'related_linkable');
     }
 
     public function emergencyType(): BelongsTo

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\SubmissionStatusEnum;
 use App\Models\Scopes\Searchable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +23,10 @@ class Submission extends Model
         'status',
         'name',
         'description',
+    ];
+
+    protected $casts = [
+        'status' => SubmissionStatusEnum::class
     ];
 
     protected array $searchable = [
@@ -59,9 +64,9 @@ class Submission extends Model
         return $this->morphOne(Location::class, 'locatable');
     }
 
-    public function relatedLink(): MorphOne
+    public function relatedLinks(): MorphMany
     {
-        return $this->morphOne(RelatedLink::class, 'related_linkable');
+        return $this->morphMany(RelatedLink::class, 'related_linkable');
     }
 
     public function emergencyType(): BelongsTo
@@ -72,5 +77,15 @@ class Submission extends Model
     public function contacts(): MorphMany
     {
         return $this->morphMany(Contact::class, 'contactable');
+    }
+
+    public function isAuthOwner(): bool
+    {
+        return $this->submitted_by === auth()->id();
+    }
+
+    public function isAuthMaintainer(): bool
+    {
+        return $this->monitored_by === auth()->id();
     }
 }
