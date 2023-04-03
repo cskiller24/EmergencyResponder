@@ -17,10 +17,10 @@ class SubmissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::role('user')->get();
-        $moderators = User::role('moderator')->get();
+        $users = User::role('user')->pluck('id');
+        $moderators = User::role('moderator')->pluck('id');
 
-        $users->each(function (User $user) use ($moderators) {
+        $users->each(function ($userId) use ($moderators) {
             // If the user is monitored
             $submission = Submission::factory()
                 ->has(Location::factory())
@@ -29,14 +29,14 @@ class SubmissionSeeder extends Seeder
                 ->has(Contact::factory()->count(mt_rand(1, 3)));
 
             if (mt_rand(0, 1) === 1) {
-                $moderatorsId = $moderators->random()->take(1)->pluck('id')[0];
                 $submission->create([
-                    'monitored_by' => $moderatorsId,
-                    'submitted_by' => $user->id,
+                    'monitored_by' => $moderators->random(1)->first(),
+                    'submitted_by' => $userId,
                 ]);
             } else {
                 $submission->create([
-                    'submitted_by' => $user->id,
+                    'submitted_by' => $userId,
+                    'monitored_by' => null
                 ]);
             }
         });
