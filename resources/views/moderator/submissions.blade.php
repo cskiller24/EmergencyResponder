@@ -23,6 +23,8 @@ Submission
         <div class="col-md-2 mb-2">
             <select name="f" class="form-select">
                 <option selected disabled>Select Filters</option>
+                <option value="no-mod">No moderators</option>
+                <option value="has-mod">Has moderators</option>
                 @forelse ($statuses as $status)
                 <option value="{{ $status->value }}" class="dropdown-item" >{{ $status->titleCase() }}</option>
                 @empty
@@ -69,7 +71,7 @@ Submission
                     <td>{{ $submission->emergencyType->name }}</td>
                     <td>{{ $submission->status->titleCase() }}</td>
                     <td>{{ $submission->submittedBy->email }}</td>
-                    <td>{{ $submission->monitoredBy->email }}</td>
+                    <td>{{ $submission->monitoredBy->email ?? 'No moderator' }}</td>
                     <td>{{ $submission->updated_at->diffForHumans() }}</td>
 
                 </tr>

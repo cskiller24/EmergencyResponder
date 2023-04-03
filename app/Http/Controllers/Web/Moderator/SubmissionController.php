@@ -8,9 +8,9 @@ use App\Http\Requests\SubmissionRequest;
 use App\Http\Requests\SubmissionUpdateRequest;
 use App\Models\Location;
 use App\Models\Submission;
-use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -27,10 +27,19 @@ class SubmissionController extends Controller
             ->when(request('s'), function (Builder $q) {
                 $q->search(request('s'));
             })
-            ->when(request('f') && SubmissionStatusEnum::tryFrom(request('f'))?->titleCase(), function (Builder $q) {
+            ->when(request('f') && SubmissionStatusEnum::tryFrom((int) request('f'))?->titleCase(), function (Builder $q) {
                 $q->where('status', request('filter'));
             })
+            ->when(request('f') && in_array(request('f'), ['no-mod', 'has-mod']), function (Builder $q) {
+                $mod = match(request('f')) {
+                    'no-mod' => "=",
+                    'has-mod' => "!="
+                };
+
+                $q->where('monitored_by', $mod, null);
+            })
             ->with(['location', 'monitoredBy', 'emergencyType', 'contacts', 'submittedBy'])
+            ->latest()
             ->paginate(validatePerPage());
         $submissionsCount = cache()->remember('submissions-count', now()->addMinutes(30), fn () => Submission::query()->count());
         $statuses = SubmissionStatusEnum::cases();
