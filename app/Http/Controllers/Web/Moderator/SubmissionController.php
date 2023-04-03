@@ -7,13 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SubmissionRequest;
 use App\Http\Requests\SubmissionUpdateRequest;
 use App\Models\Location;
-use App\Models\RelatedLink;
 use App\Models\Submission;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class SubmissionController extends Controller
@@ -46,8 +44,10 @@ class SubmissionController extends Controller
     public function create(): View
     {
         $this->authorize('store', Submission::class);
+        $enableLivewire = true;
+        $withToast = true;
 
-        return view('');
+        return view('user.submissions-create', compact('enableLivewire', 'withToast'));
     }
 
     /**
@@ -60,13 +60,13 @@ class SubmissionController extends Controller
         DB::beginTransaction();
         try {
             $submissionFillables = app(Submission::class)->getFillable();
-            $relatedLinkFillables = app(RelatedLink::class)->getFillable();
             $locationFillables = app(Location::class)->getFillable();
+            $submissionsArray = array_merge($request->only($submissionFillables), ['submitted_by' => auth()->id()]);
 
-            $submission = Submission::query()->create($request->only($submissionFillables));
+            $submission = Submission::query()->create($submissionsArray);
             $submission->location()->create($request->only($locationFillables));
-            $submission->contacts()->createMany($request->only($locationFillables));
-            $submission->relatedLinks()->createMany($request->only($relatedLinkFillables));
+            $submission->contacts()->createMany($request->get('contacts'));
+            $submission->relatedLinks()->createMany($request->get('links'));
 
             DB::commit();
             \toastr()->success('Submission added successfully');
@@ -75,7 +75,7 @@ class SubmissionController extends Controller
             throw $e;
         }
 
-        return redirect()->route('/');
+        return redirect('/');
     }
 
     /**
@@ -103,13 +103,13 @@ class SubmissionController extends Controller
      */
     public function update(SubmissionUpdateRequest $request, Submission $submission): RedirectResponse
     {
-        if($request->status === SubmissionStatusEnum::DRAFT) {
+        if ($request->status === SubmissionStatusEnum::DRAFT) {
             $this->authorize('submission->update');
 
             $submission->update($request->validated());
         }
 
-        if($request->status === SubmissionStatusEnum::APPROVED) {
+        if ($request->status === SubmissionStatusEnum::APPROVED) {
             $this->authorize('approveDenySubmission', Submission::class);
 
             return $this->approveSubmission($request, $submission);
@@ -126,6 +126,5 @@ class SubmissionController extends Controller
 
     private function approveSubmission(SubmissionUpdateRequest $request, Submission $submission): RedirectResponse
     {
-
     }
 }

@@ -13,7 +13,7 @@ enum SubmissionStatusEnum: int
 
     public function getMessage(): string
     {
-        return match($this) {
+        return match ($this) {
             static::DRAFT => 'Submission is on draft',
             static::SUBMITTED => 'Submission is submitted',
             static::APPROVED => 'Submission is approved',
@@ -23,7 +23,7 @@ enum SubmissionStatusEnum: int
 
     public function titleCase(): string
     {
-        return match($this) {
+        return match ($this) {
             static::DRAFT => 'Draft',
             static::SUBMITTED => 'Submitted',
             static::APPROVED => 'Approved',
@@ -33,7 +33,7 @@ enum SubmissionStatusEnum: int
 
     public function isDraft(): bool
     {
-        return match($this) {
+        return match ($this) {
             static::DRAFT => true,
             default => false
         };
@@ -41,7 +41,7 @@ enum SubmissionStatusEnum: int
 
     public function isSubmitted(): bool
     {
-        return match($this) {
+        return match ($this) {
             static::SUBMITTED => true,
             default => false
         };
@@ -49,7 +49,7 @@ enum SubmissionStatusEnum: int
 
     public function isApproved(): bool
     {
-        return match($this) {
+        return match ($this) {
             static::APPROVED => true,
             default => false
         };
@@ -57,7 +57,7 @@ enum SubmissionStatusEnum: int
 
     public function isDeclined(): bool
     {
-        return match($this) {
+        return match ($this) {
             static::DECLINED => true,
             default => false
         };

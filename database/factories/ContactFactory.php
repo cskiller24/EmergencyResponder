@@ -28,7 +28,7 @@ class ContactFactory extends Factory
 
     private function generate($type): string
     {
-        return match($type) {
+        return match ($type) {
             'email' => fake()->safeEmail(),
             'phone_number' => fake()->phoneNumber()
         };

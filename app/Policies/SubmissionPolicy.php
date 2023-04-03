@@ -26,9 +26,9 @@ class SubmissionPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function store(User $user): bool
     {
-        return $user->hasRole('submission_store');
+        return $user->hasPermissionTo('submission_store');
     }
 
     /**

@@ -5,9 +5,9 @@ use App\Http\Controllers\Web\Admin\EmergencyTypeController;
 use App\Http\Controllers\Web\Admin\InviteController;
 use App\Http\Controllers\Web\Admin\PermissionController;
 use App\Http\Controllers\Web\Admin\RoleController;
+use App\Http\Controllers\Web\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Web\Auth\RegisterController;
 use App\Http\Controllers\Web\Moderator\SubmissionController;
-use App\Http\Controllers\Web\UserController;
 use App\Mail\SendInvite;
 use App\Models\Invite;
 use Illuminate\Support\Facades\Route;
@@ -23,9 +23,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', 'login');
 
 Route::get('/register', [RegisterController::class, 'create'])->name('register')->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store'])->name('register')->middleware('guest');
@@ -44,25 +42,26 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin'], 'as' 
     Route::post('/invites/{invite:code}/resend', [InviteController::class, 'resend'])->name('invites.resend');
     Route::delete('/invites/{invite:code}', [InviteController::class, 'destroy'])->name('invites.destroy');
 
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
 });
 
 // Moderator
 Route::group(['prefix' => 'moderator', 'middleware' => ['auth', 'role:moderator'], 'as' => 'moderator.'], function () {
-    Route::get('/', function () {
-        return view('moderator.index');
-    })->name('index');
+    Route::view('/', 'moderator.index')->name('index');
 
     Route::get('/submissions', [SubmissionController::class, 'index'])->name('submissions.index');
     Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('submissions.show');
 });
 
 // User
-Route::group(['prefix' => 'user', 'middleware' => ['role:user', 'auth'], 'as' => 'user.'], function() {
+Route::group(['prefix' => 'user', 'middleware' => ['role:user', 'auth'], 'as' => 'user.'], function () {
     Route::get('/', function () {
+        return view('user.index');
+    })->name('index');
 
-    });
+    Route::get('/submissions/create', [SubmissionController::class, 'create'])->name('submissions.create');
+    Route::post('/submissions', [SubmissionController::class, 'store'])->name('submissions.store');
 });
 
 Route::get('/invites/accept/{invite:code}', [InviteController::class, 'accept'])->name('invites.accept');

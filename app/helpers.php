@@ -3,7 +3,6 @@
 use App\Enums\SubmissionStatusEnum;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 if (! function_exists('redirectRole')) {
@@ -52,7 +51,7 @@ if (! function_exists('str_snake')) {
     }
 }
 
-if(! function_exists('parse_status')) {
+if (! function_exists('parse_status')) {
     /**
      * Cast the submission status cases
      */
@@ -62,21 +61,21 @@ if(! function_exists('parse_status')) {
     }
 }
 
-if(! function_exists('validatePerPage')) {
+if (! function_exists('validatePerPage')) {
     /**
      * Validate the per page get request in pagination
      */
     function validatePerPage(string|int $page = null, int $default = 10): int
     {
-        if(! $page) {
+        if (! $page) {
             $page = request('p');
         }
 
-        if(! is_numeric($page)) {
+        if (! is_numeric($page)) {
             return $default;
         }
 
-        if(! in_array((int) $page, [10, 20, 30])) {
+        if (! in_array((int) $page, [10, 20, 30])) {
             return $default;
         }
 

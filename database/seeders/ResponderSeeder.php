@@ -19,9 +19,9 @@ class ResponderSeeder extends Seeder
         Responder::factory()
             ->count(10)
             ->has(Location::factory())
-            ->has(RelatedLink::factory()->count(1,3))
+            ->has(RelatedLink::factory()->count(1, 3))
             ->has(EmergencyType::factory())
-            ->has(Contact::factory()->count(mt_rand(1,3)))
+            ->has(Contact::factory()->count(mt_rand(1, 3)))
             ->create();
     }
 }

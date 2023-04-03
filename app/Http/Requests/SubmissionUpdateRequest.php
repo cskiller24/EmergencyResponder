@@ -42,7 +42,7 @@ class SubmissionUpdateRequest extends FormRequest
             'city' => ['required'],
             'region' => ['required'],
             'country' => ['required'],
-            'zip' => ['required']
-        ];;
+            'zip' => ['required'],
+        ];
     }
 }

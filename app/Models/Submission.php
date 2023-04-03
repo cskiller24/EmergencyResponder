@@ -26,27 +26,27 @@ class Submission extends Model
     ];
 
     protected $casts = [
-        'status' => SubmissionStatusEnum::class
+        'status' => SubmissionStatusEnum::class,
     ];
 
     protected array $searchable = [
         'columns' => [
-            'emergency_types.name'=> 20,
+            'emergency_types.name' => 20,
             'users.email' => 50,
-            'submissions.name'=> 50,
-            'submissions.description'=> 20,
-            'locations.country'=> 10,
-            'locations.city'=> 10,
-            'locations.region'=> 10,
-            'contacts.detail'=> 10
+            'submissions.name' => 50,
+            'submissions.description' => 20,
+            'locations.country' => 10,
+            'locations.city' => 10,
+            'locations.region' => 10,
+            'contacts.detail' => 10,
         ],
         'joins' => [
             'emergency_types' => ['emergency_types.id', 'submissions.emergency_type_id'],
             'locations' => ['locations.locatable_id', 'submissions.id'],
             'contacts' => ['contacts.contactable_id', 'submissions.id'],
             'users' => ['users.id', 'submissions.submitted_by'],
-            'users' => ['users.id', 'submissions.monitored_by']
-        ]
+            'users' => ['users.id', 'submissions.monitored_by'],
+        ],
     ];
 
     public function submittedBy(): BelongsTo

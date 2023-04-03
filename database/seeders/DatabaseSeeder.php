@@ -16,18 +16,23 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionSeeder::class,
         ]);
 
-        $admin = User::factory()->create([
+        User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@eresponder.com',
             'password' => bcrypt('password'),
-        ]);
-        $admin->assignRole('admin');
+        ])->assignRole('admin');
 
         User::factory()->create([
             'name' => 'Moderator',
             'email' => 'moderator@eresponder.com',
-            'password' => bcrypt('password')
+            'password' => bcrypt('password'),
         ])->assignRole('moderator');
+
+        User::factory()->create([
+            'name' => 'User',
+            'email' => 'user@eresponder.com',
+            'password' => bcrypt('password'),
+        ])->assignRole('user');
 
         $moderators = User::factory()->count(3)->create();
         $moderators->each(function ($moderator) {

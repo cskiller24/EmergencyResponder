@@ -25,7 +25,7 @@ class User extends Authenticatable
         ],
         'joins' => [
             'model_has_roles' => ['model_has_roles.model_id', 'users.id'],
-            'roles' => ['roles.id','model_has_roles.role_id'],
+            'roles' => ['roles.id', 'model_has_roles.role_id'],
         ],
     ];
 
