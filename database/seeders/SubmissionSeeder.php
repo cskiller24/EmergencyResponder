@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\SubmissionStatusEnum;
 use App\Models\Contact;
 use App\Models\EmergencyType;
 use App\Models\Location;
@@ -35,6 +36,7 @@ class SubmissionSeeder extends Seeder
                 ]);
             } else {
                 $submission->create([
+                    'status' => SubmissionStatusEnum::SUBMITTED,
                     'submitted_by' => $userId,
                     'monitored_by' => null
                 ]);
