@@ -47,8 +47,13 @@ class SubmissionPolicy
         return $user->hasPermissionTo('submission_delete');
     }
 
-    public function approveDenySubmission(User $user, Submission $submission): bool
+    public function approveDeny(User $user, Submission $submission): bool
     {
         return $user->hasPermissionTo('approve_deny_submissions') && $submission->isAuthMaintainer();
+    }
+
+    public function addModerator(User $user, Submission $submission): bool
+    {
+        return $user->hasPermissionTo('approve_deny_submissions') && $submission->hasNoMaintainer();
     }
 }

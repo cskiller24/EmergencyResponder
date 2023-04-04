@@ -15,8 +15,6 @@ class Responder extends Model
 
     protected $fillable = [
         'emergency_type_id',
-        'location_id',
-        'related_link_id',
         'name',
         'description',
         'status',

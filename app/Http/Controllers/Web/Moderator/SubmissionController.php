@@ -4,15 +4,21 @@ namespace App\Http\Controllers\Web\Moderator;
 
 use App\Enums\SubmissionStatusEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SubmissionRequest;
+use App\Http\Requests\SubmissionStoreRequest;
 use App\Http\Requests\SubmissionUpdateRequest;
+use App\Models\Contact;
 use App\Models\Location;
+use App\Models\RelatedLink;
+use App\Models\Responder;
 use App\Models\Submission;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Arr;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Request;
 
 class SubmissionController extends Controller
 {
@@ -39,7 +45,7 @@ class SubmissionController extends Controller
                 $q->where('monitored_by', $mod, null);
             })
             ->with(['location', 'monitoredBy', 'emergencyType', 'contacts', 'submittedBy'])
-            ->latest()
+            ->latest('updated_at')
             ->paginate(validatePerPage());
         $submissionsCount = cache()->remember('submissions-count', now()->addMinutes(30), fn () => Submission::query()->count());
         $statuses = SubmissionStatusEnum::cases();
@@ -62,27 +68,22 @@ class SubmissionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SubmissionRequest $request): RedirectResponse
+    public function store(SubmissionStoreRequest $request): RedirectResponse
     {
         $this->authorize('store', Submission::class);
 
-        DB::beginTransaction();
-        try {
+        DB::transaction(function () use ($request) {
             $submissionFillables = app(Submission::class)->getFillable();
             $locationFillables = app(Location::class)->getFillable();
-            $submissionsArray = array_merge($request->only($submissionFillables), ['submitted_by' => auth()->id()]);
+            $submissionsData = array_merge($request->only($submissionFillables), ['submitted_by' => auth()->id()]);
 
-            $submission = Submission::query()->create($submissionsArray);
+            $submission = Submission::query()->create($submissionsData);
             $submission->location()->create($request->only($locationFillables));
             $submission->contacts()->createMany($request->get('contacts'));
             $submission->relatedLinks()->createMany($request->get('links'));
 
-            DB::commit();
             \toastr()->success('Submission added successfully');
-        } catch (QueryException $e) {
-            DB::rollBack();
-            throw $e;
-        }
+        }, 3);
 
         return redirect('/');
     }
@@ -112,17 +113,7 @@ class SubmissionController extends Controller
      */
     public function update(SubmissionUpdateRequest $request, Submission $submission): RedirectResponse
     {
-        if ($request->status === SubmissionStatusEnum::DRAFT) {
-            $this->authorize('submission->update');
 
-            $submission->update($request->validated());
-        }
-
-        if ($request->status === SubmissionStatusEnum::APPROVED) {
-            $this->authorize('approveDenySubmission', Submission::class);
-
-            return $this->approveSubmission($request, $submission);
-        }
     }
 
     /**
@@ -133,7 +124,73 @@ class SubmissionController extends Controller
         //
     }
 
-    private function approveSubmission(SubmissionUpdateRequest $request, Submission $submission): RedirectResponse
+    public function approveSubmission(Submission $submission): RedirectResponse
     {
+        $this->authorize('approveDeny', $submission);
+
+        throw_unless(
+            $submission->status === SubmissionStatusEnum::SUBMITTED,
+            ValidationException::withMessages(['error' => 'You cannot approve a non-submitted submission'])
+        );
+
+        $submission->load(['location', 'monitoredBy', 'emergencyType', 'contacts', 'submittedBy', 'relatedLinks']);
+
+        $responderFillable = app(Responder::class)->getFillable();
+        $locationFillables = app(Location::class)->getFillable();
+        $contactsFillables = app(Contact::class)->getFillable();
+        $relatedLinksFillable = app(RelatedLink::class)->getFillable();
+
+        $contactsData = $submission->contacts->map(
+            fn (Contact $data) => $data->only($contactsFillables))
+            ->toArray();
+        $relatedLinksData = $submission->relatedLinks->map(
+            fn (RelatedLink $data) => $data->only($relatedLinksFillable))
+            ->toArray();
+
+        DB::transaction(function () use (
+            $submission, $responderFillable, $locationFillables, $contactsData, $relatedLinksData
+            ) {
+            $submission->update(['status' => SubmissionStatusEnum::APPROVED]);
+
+            $responder = Responder::query()->create($submission->only($responderFillable));
+            $responder->location()->create($submission->location->only($locationFillables));
+            $responder->contacts()->createMany($contactsData);
+            $responder->relatedLinks()->createMany($relatedLinksData);
+
+            \toastr()->success('Sucessfully approve submission');
+        }, 3);
+
+        return redirect()->route('moderator.submissions.index');
+    }
+
+    public function denySubmission(Submission $submission): RedirectResponse
+    {
+        throw_unless(
+            $submission->status === SubmissionStatusEnum::SUBMITTED,
+            ValidationException::withMessages(['error' => 'You cannot deny a non-submitted submission'])
+        );
+
+        $this->authorize('approveDeny', $submission);
+
+        $submission->update(['status' => SubmissionStatusEnum::DECLINED]);
+
+        \toastr()->success('Successfully declined submission');
+        return redirect()->route('moderator.submissions.show', $submission->id);
+    }
+
+    public function addModerator(Submission $submission): RedirectResponse
+    {
+        throw_unless(
+            $submission->hasNoMaintainer(),
+            ValidationException::withMessages(['error' => 'The submission already have maintainer'])
+        );
+
+        $this->authorize('addModerator', $submission);
+
+        $submission->update(['monitored_by' => auth()->id()]);
+
+        \toastr()->success('Successfully added moderator');
+        return redirect()->route('moderator.submissions.show', $submission->id);
+
     }
 }

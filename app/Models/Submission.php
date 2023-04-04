@@ -88,4 +88,14 @@ class Submission extends Model
     {
         return $this->monitored_by === auth()->id();
     }
+
+    public function hasMaintainer(): bool
+    {
+        return $this->monitored_by !== null;
+    }
+
+    public function hasNoMaintainer(): bool
+    {
+        return $this->monitored_by === null;
+    }
 }
