@@ -7,7 +7,9 @@ use App\Http\Controllers\Web\Admin\PermissionController;
 use App\Http\Controllers\Web\Admin\RoleController;
 use App\Http\Controllers\Web\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Web\Auth\RegisterController;
-use App\Http\Controllers\Web\Moderator\SubmissionController;
+use App\Http\Controllers\Web\Moderator\ResponderController;
+use App\Http\Controllers\Web\Moderator\SubmissionController as ModeratorSubmissionController;
+use App\Http\Controllers\Web\User\SubmissionController as UserSubmissionController;
 use App\Mail\SendInvite;
 use App\Models\Invite;
 use Illuminate\Support\Facades\Route;
@@ -51,20 +53,22 @@ Route::group(['prefix' => 'moderator', 'middleware' => ['auth', 'role:moderator'
     Route::view('/', 'moderator.index')->name('index');
 
     Route::group(['prefix' => 'submissions', 'as' => 'submissions.'], function () {
-        Route::get('/', [SubmissionController::class, 'index'])->name('index');
-        Route::get('/{submission}', [SubmissionController::class, 'show'])->name('show');
-        Route::patch('/{submission}/moderator', [SubmissionController::class, 'addModerator'])->name('moderate');
-        Route::patch('/{submission}/approve', [SubmissionController::class, 'approveSubmission'])->name('approve');
-        Route::patch('/{submission}/deny', [SubmissionController::class, 'denySubmission'])->name('deny');
+        Route::get('/', [ModeratorSubmissionController::class, 'index'])->name('index');
+        Route::get('/{submission}', [ModeratorSubmissionController::class, 'show'])->name('show');
+        Route::patch('/{submission}/moderator', [ModeratorSubmissionController::class, 'addModerator'])->name('moderate');
+        Route::patch('/{submission}/approve', [ModeratorSubmissionController::class, 'approveSubmission'])->name('approve');
+        Route::patch('/{submission}/deny', [ModeratorSubmissionController::class, 'denySubmission'])->name('deny');
     });
+
+    Route::resource('responders', ResponderController::class);
 });
 
 // User
 Route::group(['prefix' => 'user', 'middleware' => ['role:user', 'auth'], 'as' => 'user.'], function () {
     Route::view('/', 'user.index')->name('index');
 
-    Route::get('/submissions/create', [SubmissionController::class, 'create'])->name('submissions.create');
-    Route::post('/submissions', [SubmissionController::class, 'store'])->name('submissions.store');
+    Route::get('/submissions/create', [UserSubmissionController::class, 'create'])->name('submissions.create');
+    Route::post('/submissions', [UserSubmissionController::class, 'store'])->name('submissions.store');
 });
 
 Route::get('/invites/accept/{invite:code}', [InviteController::class, 'accept'])->name('invites.accept');

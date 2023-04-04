@@ -5,26 +5,19 @@ namespace App\Http\Controllers\Web\Moderator;
 use App\Enums\SubmissionStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubmissionStoreRequest;
-use App\Http\Requests\SubmissionUpdateRequest;
 use App\Models\Contact;
 use App\Models\Location;
 use App\Models\RelatedLink;
 use App\Models\Responder;
 use App\Models\Submission;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use Request;
 
 class SubmissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(): View
     {
         $this->authorize('viewAny', Submission::class);
@@ -53,44 +46,8 @@ class SubmissionController extends Controller
         return view('moderator.submissions', compact('submissions', 'submissionsCount', 'statuses'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(): View
-    {
-        $this->authorize('store', Submission::class);
-        $enableLivewire = true;
-        $withToast = true;
 
-        return view('user.submissions-create', compact('enableLivewire', 'withToast'));
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(SubmissionStoreRequest $request): RedirectResponse
-    {
-        $this->authorize('store', Submission::class);
-
-        DB::transaction(function () use ($request) {
-            $submissionFillables = app(Submission::class)->getFillable();
-            $locationFillables = app(Location::class)->getFillable();
-            $submissionsData = array_merge($request->only($submissionFillables), ['submitted_by' => auth()->id()]);
-
-            $submission = Submission::query()->create($submissionsData);
-            $submission->location()->create($request->only($locationFillables));
-            $submission->contacts()->createMany($request->get('contacts'));
-            $submission->relatedLinks()->createMany($request->get('links'));
-
-            \toastr()->success('Submission added successfully');
-        }, 3);
-
-        return redirect('/');
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Submission $submission): View
     {
         $this->authorize('view', $submission);
@@ -98,30 +55,6 @@ class SubmissionController extends Controller
         $submission->load(['location', 'monitoredBy', 'emergencyType', 'contacts', 'submittedBy', 'relatedLinks']);
 
         return view('moderator.submissions-show', compact('submission'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(SubmissionUpdateRequest $request, Submission $submission): RedirectResponse
-    {
-
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 
     public function approveSubmission(Submission $submission): RedirectResponse
