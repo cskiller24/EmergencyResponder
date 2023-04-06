@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\Finder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,13 +12,15 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Responder extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, Finder;
 
     protected $fillable = [
         'emergency_type_id',
         'name',
         'description',
         'status',
+        'longitude',
+        'latitude'
     ];
 
     public function location(): MorphOne

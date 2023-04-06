@@ -25,6 +25,8 @@ class SubmissionFactory extends Factory
             'status' => mt_rand(1, 4), // to update
             'name' => fake()->sentence(),
             'description' => fake()->sentences(3, true),
+            'latitude' => fake()->latitude(),
+            'longitude' => fake()->longitude(),
             'monitored_by' => User::factory(),
             'emergency_type_id' => EmergencyType::factory(),
         ];

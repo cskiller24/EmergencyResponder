@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Web\Moderator;
 
 use App\Enums\SubmissionStatusEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SubmissionStoreRequest;
 use App\Models\Contact;
 use App\Models\Location;
 use App\Models\RelatedLink;
@@ -27,7 +26,7 @@ class SubmissionController extends Controller
                 $q->search(request('s'));
             })
             ->when(request('f') && SubmissionStatusEnum::tryFrom((int) request('f'))?->titleCase(), function (Builder $q) {
-                $q->where('status', request('filter'));
+                $q->where('status', request('f'));
             })
             ->when(request('f') && in_array(request('f'), ['no-mod', 'has-mod']), function (Builder $q) {
                 $mod = match(request('f')) {
@@ -36,6 +35,15 @@ class SubmissionController extends Controller
                 };
 
                 $q->where('monitored_by', $mod, null);
+            })
+            ->when(request('f') && in_array(request('f'), ['nearest', 'farthest']), function ($q) {
+                if(is_numeric(request('_latitude')) && is_numeric(request('_longitude'))) {
+                    if(request('f') === 'nearest') {
+                        $q->nearest(request('_latitude'), request('_longitude'));
+                    } else {
+                        $q->farthest(request('_latitude'), request('_longitude'));
+                    }
+                }
             })
             ->with(['location', 'monitoredBy', 'emergencyType', 'contacts', 'submittedBy'])
             ->latest('updated_at')

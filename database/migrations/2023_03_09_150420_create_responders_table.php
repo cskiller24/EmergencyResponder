@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->longText('description');
             $table->integer('status');
+            $table->decimal('latitude', 10, 8);
+            $table->decimal('longitude', 11, 8);
 
             $table->foreignUuid('emergency_type_id')->constrained();
             $table->timestamps();

@@ -61,6 +61,7 @@
     </div>
     <!-- Libs JS -->
     @include('partials.tabler-scripts')
+    @stack('geolocation-script')
 </body>
 
 </html>

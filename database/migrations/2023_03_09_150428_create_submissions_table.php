@@ -17,6 +17,8 @@ return new class extends Migration
             $table->longText('description');
             $table->integer('status');
             $table->boolean('submitter_notify')->default(false);
+            $table->decimal('latitude', 10, 8);
+            $table->decimal('longitude', 11, 8);
             $table->foreignUuid('submitted_by')->constrained('users');
             $table->foreignUuid('monitored_by')->nullable()->constrained('users');
             $table->foreignUuid('emergency_type_id')->constrained();

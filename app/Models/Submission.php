@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\SubmissionStatusEnum;
+use App\Models\Scopes\Finder;
 use App\Models\Scopes\Searchable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Submission extends Model
 {
-    use HasFactory, HasUuids, Searchable;
+    use HasFactory, HasUuids, Searchable, Finder;
 
     protected $fillable = [
         'submitted_by',
@@ -23,6 +24,8 @@ class Submission extends Model
         'status',
         'name',
         'description',
+        'latitude',
+        'longitude'
     ];
 
     protected $casts = [

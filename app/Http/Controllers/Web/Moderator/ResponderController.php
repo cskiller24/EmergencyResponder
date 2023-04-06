@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Moderator;
 
 use App\Http\Controllers\Controller;
+use App\Models\Responder;
 use Illuminate\Http\Request;
 
 class ResponderController extends Controller
@@ -12,7 +13,7 @@ class ResponderController extends Controller
      */
     public function index()
     {
-        //
+        $responder = Responder::nearest(14.598027263515888, 121.01783581582849)->first();
     }
 
     /**
