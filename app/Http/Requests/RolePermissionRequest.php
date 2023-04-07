@@ -26,4 +26,11 @@ class RolePermissionRequest extends FormRequest
             'permissions.*' => ['exists:'.config('permission.table_names.permissions').',name'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'permissions.*.exists' => 'Permission does not exists'
+        ];
+    }
 }
