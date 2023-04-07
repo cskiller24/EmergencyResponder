@@ -10,6 +10,7 @@ use Tests\Traits\UserCreator;
 class RoleControllerTest extends TestCase
 {
     use UserCreator;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -141,7 +142,7 @@ class RoleControllerTest extends TestCase
 
         $dataAssert = [
             config('permission.column_names.role_pivot_key') ?? 'role_id' => $role->id,
-            config('permission.column_names.permission_pivot_key') ?? 'permission_id' => $permission->id
+            config('permission.column_names.permission_pivot_key') ?? 'permission_id' => $permission->id,
         ];
 
         $this->assertDatabaseHas(config('permission.table_names.role_has_permissions'), $dataAssert);

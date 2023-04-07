@@ -30,7 +30,7 @@ class RolePermissionRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'permissions.*.exists' => 'Permission does not exists'
+            'permissions.*.exists' => 'Permission does not exists',
         ];
     }
 }
