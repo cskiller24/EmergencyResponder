@@ -1,13 +1,21 @@
 <?php
 
 use App\Enums\SubmissionStatusEnum;
-use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Str;
+use Spatie\Permission\Traits\HasRoles;
 
 if (! function_exists('redirectRole')) {
-    function redirectRole(User $user): string
+    function redirectRole($user = null): string
     {
+        if(! $user) {
+            return '/';
+        }
+
+        if(in_array(HasRoles::class ,class_uses_recursive($user::class))) {
+            return '/';
+        }
+
         if ($user->hasRole('admin')) {
             return RouteServiceProvider::ADMIN;
         }
