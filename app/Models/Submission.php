@@ -14,7 +14,10 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Submission extends Model
 {
-    use HasFactory, HasUuids, Searchable, Finder;
+    use HasFactory;
+    use HasUuids;
+    use Searchable;
+    use Finder;
 
     protected $fillable = [
         'submitted_by',
@@ -25,7 +28,7 @@ class Submission extends Model
         'name',
         'description',
         'latitude',
-        'longitude'
+        'longitude',
     ];
 
     protected $casts = [

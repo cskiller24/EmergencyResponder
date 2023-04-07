@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Invite;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Spatie\Permission\Models\Role;
 use Symfony\Component\Uid\Ulid;
 
 /**
@@ -25,5 +26,12 @@ class InviteFactory extends Factory
             'email' => fake()->safeEmail(),
             'role' => 'moderator',
         ];
+    }
+
+    public function existingRole(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => Role::all()->random(1)->first()->name,
+        ]);
     }
 }

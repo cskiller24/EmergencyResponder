@@ -38,7 +38,7 @@ class SubmissionSeeder extends Seeder
                 $submission->create([
                     'status' => SubmissionStatusEnum::SUBMITTED,
                     'submitted_by' => $userId,
-                    'monitored_by' => null
+                    'monitored_by' => null,
                 ]);
             }
         });

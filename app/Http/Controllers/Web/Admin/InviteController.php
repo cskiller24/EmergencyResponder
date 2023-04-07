@@ -47,13 +47,15 @@ class InviteController extends Controller
             DB::rollBack();
 
             \toastr()->warning('Something went wrong please try again');
+            throw $e;
         } catch(TransportException $f) {
             DB::rollBack();
 
             \toastr()->warning('Something when wrong in sending the email');
+            throw $f;
         }
 
-        return redirect()->back();
+        return redirect()->route('admin.invites.index');
     }
 
     public function accept(Invite $invite): View
@@ -63,7 +65,12 @@ class InviteController extends Controller
 
     public function process(Request $request, CreateNewUser $creator, Invite $invite): RedirectResponse
     {
-        $creator->create($request->all())->assignRole($invite->role);
+        $data = array_merge(
+            $request->only(['name', 'password', 'password_confirmation']),
+            ['email' => $invite->email]
+        );
+
+        $creator->create($data)->assignRole($invite->role);
 
         $invite->delete();
 

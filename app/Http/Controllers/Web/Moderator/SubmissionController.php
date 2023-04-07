@@ -10,8 +10,8 @@ use App\Models\RelatedLink;
 use App\Models\Responder;
 use App\Models\Submission;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -29,16 +29,16 @@ class SubmissionController extends Controller
                 $q->where('status', request('f'));
             })
             ->when(request('f') && in_array(request('f'), ['no-mod', 'has-mod']), function (Builder $q) {
-                $mod = match(request('f')) {
-                    'no-mod' => "=",
-                    'has-mod' => "!="
+                $mod = match (request('f')) {
+                    'no-mod' => '=',
+                    'has-mod' => '!='
                 };
 
                 $q->where('monitored_by', $mod, null);
             })
             ->when(request('f') && in_array(request('f'), ['nearest', 'farthest']), function ($q) {
-                if(is_numeric(request('_latitude')) && is_numeric(request('_longitude'))) {
-                    if(request('f') === 'nearest') {
+                if (is_numeric(request('_latitude')) && is_numeric(request('_longitude'))) {
+                    if (request('f') === 'nearest') {
                         $q->nearest(request('_latitude'), request('_longitude'));
                     } else {
                         $q->farthest(request('_latitude'), request('_longitude'));
@@ -53,8 +53,6 @@ class SubmissionController extends Controller
 
         return view('moderator.submissions', compact('submissions', 'submissionsCount', 'statuses'));
     }
-
-
 
     public function show(Submission $submission): View
     {
@@ -82,15 +80,21 @@ class SubmissionController extends Controller
         $relatedLinksFillable = app(RelatedLink::class)->getFillable();
 
         $contactsData = $submission->contacts->map(
-            fn (Contact $data) => $data->only($contactsFillables))
+            fn (Contact $data) => $data->only($contactsFillables)
+        )
             ->toArray();
         $relatedLinksData = $submission->relatedLinks->map(
-            fn (RelatedLink $data) => $data->only($relatedLinksFillable))
+            fn (RelatedLink $data) => $data->only($relatedLinksFillable)
+        )
             ->toArray();
 
         DB::transaction(function () use (
-            $submission, $responderFillable, $locationFillables, $contactsData, $relatedLinksData
-            ) {
+            $submission,
+            $responderFillable,
+            $locationFillables,
+            $contactsData,
+            $relatedLinksData
+        ) {
             $submission->update(['status' => SubmissionStatusEnum::APPROVED]);
 
             $responder = Responder::query()->create($submission->only($responderFillable));
@@ -116,6 +120,7 @@ class SubmissionController extends Controller
         $submission->update(['status' => SubmissionStatusEnum::DECLINED]);
 
         \toastr()->success('Successfully declined submission');
+
         return redirect()->route('moderator.submissions.show', $submission->id);
     }
 
@@ -131,7 +136,7 @@ class SubmissionController extends Controller
         $submission->update(['monitored_by' => auth()->id()]);
 
         \toastr()->success('Successfully added moderator');
-        return redirect()->route('moderator.submissions.show', $submission->id);
 
+        return redirect()->route('moderator.submissions.show', $submission->id);
     }
 }

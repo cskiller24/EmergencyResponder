@@ -12,7 +12,9 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Responder extends Model
 {
-    use HasFactory, HasUuids, Finder;
+    use HasFactory;
+    use HasUuids;
+    use Finder;
 
     protected $fillable = [
         'emergency_type_id',
@@ -20,7 +22,7 @@ class Responder extends Model
         'description',
         'status',
         'longitude',
-        'latitude'
+        'latitude',
     ];
 
     public function location(): MorphOne

@@ -26,7 +26,7 @@ class ResponderFactory extends Factory
             'status' => rand(1, 3), // to update
             'emergency_type_id' => EmergencyType::factory(),
             'latitude' => fake()->latitude(),
-            'longitude' => fake()->longitude()
+            'longitude' => fake()->longitude(),
         ];
     }
 }

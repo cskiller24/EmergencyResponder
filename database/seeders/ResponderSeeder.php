@@ -25,7 +25,7 @@ class ResponderSeeder extends Seeder
             ->create([
                 'name' => 'near',
                 'latitude' => 14.58876581106536,
-                'longitude' => 121.01470321721692
+                'longitude' => 121.01470321721692,
             ]);
 
         Responder::factory()

@@ -15,7 +15,12 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasUuids, HasRoles, Searchable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+    use HasUuids;
+    use HasRoles;
+    use Searchable;
 
     protected array $searchable = [
         'columns' => [

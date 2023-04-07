@@ -7,7 +7,7 @@ Register | Emergency Responder
 @section('content')
 <div class="page page-center w-50">
     <div class="container container-tight py-4">
-        <form class="card card-md" action="{{ route('invites.register',) }}" method="POST">
+        <form class="card card-md" action="{{ route('invites.register', $invite->code) }}" method="POST">
             @csrf
             <div class="card-body">
                 <h2 class="card-title text-center mb-4 h2">Create new account</h2>
