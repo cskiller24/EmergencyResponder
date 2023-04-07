@@ -31,7 +31,7 @@ class PermissionController extends Controller
 
         \toastr()->success('Permission added successfully');
 
-        return redirect()->route('permissions.index');
+        return redirect()->route('admin.permissions.index');
     }
 
     /**
@@ -53,7 +53,7 @@ class PermissionController extends Controller
 
         \toastr()->success('Permission updated successfully');
 
-        return redirect()->route('permissions.show', $permission->id);
+        return redirect()->route('admin.permissions.show', $permission->id);
     }
 
     /**
@@ -69,6 +69,6 @@ class PermissionController extends Controller
 
         \toastr()->success('Permission deleted successfully');
 
-        return redirect()->route('permissions.index');
+        return redirect()->route('admin.permissions.index');
     }
 }
