@@ -33,8 +33,8 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register')
 // Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin'], 'as' => 'admin.'], function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
-    Route::resource('roles', RoleController::class)->except(['create', 'edit']);
     Route::post('roles/{role}/permissions', [RoleController::class, 'storePermissions'])->name('roles.permissions.store');
+    Route::resource('roles', RoleController::class)->except(['create', 'edit']);
     Route::resource('permissions', PermissionController::class)->except(['create', 'edit']);
     Route::resource('emergency-types', EmergencyTypeController::class)->except(['create', 'edit']);
 
