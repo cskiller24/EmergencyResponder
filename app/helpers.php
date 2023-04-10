@@ -9,11 +9,11 @@ if (! function_exists('redirectRole')) {
     function redirectRole($user = null): string
     {
         if(! $user) {
-            return '/';
+            return RouteServiceProvider::HOME;
         }
 
-        if(in_array(HasRoles::class ,class_uses_recursive($user::class))) {
-            return '/';
+        if(! in_array(HasRoles::class ,class_uses_recursive($user::class))) {
+            return RouteServiceProvider::HOME;
         }
 
         if ($user->hasRole('admin')) {
