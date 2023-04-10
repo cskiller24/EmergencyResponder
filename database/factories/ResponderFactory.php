@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ResponderStatusEnum;
 use App\Models\EmergencyType;
 use App\Models\Responder;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,7 +24,7 @@ class ResponderFactory extends Factory
         return [
             'name' => fake()->sentence(),
             'description' => fake()->sentences(3, true),
-            'status' => rand(1, 3), // to update
+            'status' => ResponderStatusEnum::randomValue(), // to update
             'emergency_type_id' => EmergencyType::factory(),
             'latitude' => fake()->latitude(),
             'longitude' => fake()->longitude(),

@@ -30,7 +30,7 @@ class ContactFactory extends Factory
     {
         return match ($type) {
             'email' => fake()->safeEmail(),
-            'phone_number' => fake()->phoneNumber()
+            'phone_number' => fake()->mobileNumber() ?? fake()->phoneNumber()
         };
     }
 

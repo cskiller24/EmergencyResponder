@@ -17,7 +17,6 @@ class ResponderSeeder extends Seeder
     public function run(): void
     {
         Responder::factory()
-            ->count(10)
             ->has(Location::factory())
             ->has(RelatedLink::factory()->count(1, 3))
             ->has(EmergencyType::factory())
