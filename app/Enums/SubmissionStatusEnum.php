@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum SubmissionStatusEnum: int
+use App\Enums\Contracts\EnumStatus;
+
+enum SubmissionStatusEnum: int implements EnumStatus
 {
     case DRAFT = 1;
     case SUBMITTED = 2;
