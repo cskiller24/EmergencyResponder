@@ -91,7 +91,7 @@ trait Searchable
 
         $this->mergeQueries($query, $q);
 
-        return $q;
+        return $q->distinct();
     }
 
     /**
