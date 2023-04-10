@@ -60,7 +60,7 @@ Route::group(['prefix' => 'moderator', 'middleware' => ['auth', 'role:moderator'
         Route::patch('/{submission}/deny', [ModeratorSubmissionController::class, 'denySubmission'])->name('deny');
     });
 
-    Route::resource('responders', ResponderController::class);
+    Route::resource('responders', ResponderController::class)->except(['store', 'destroy']);
 });
 
 // User

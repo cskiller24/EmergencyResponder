@@ -8,6 +8,9 @@
     <title>@yield('title', 'Moderator | EResponser')</title>
     <!-- CSS files -->
     @include('partials.tabler-styles')
+    @if ($enableLivewire ?? false)
+        @livewireStyles
+    @endif
 </head>
 
 <body>
@@ -61,6 +64,9 @@
     </div>
     <!-- Libs JS -->
     @include('partials.tabler-scripts')
+    @if ($enableLivewire ?? false)
+        @livewireScripts
+    @endif
     @stack('geolocation-script')
 </body>
 

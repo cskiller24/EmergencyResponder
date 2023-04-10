@@ -219,20 +219,20 @@
                     </a>
                 </li>
 
-                <li @class(['nav-item', 'active' => route_named('moderator.submissions.index')])>
-                    <a class="nav-link" href="{{ route('moderator.submissions.index') }}">
+                <li @class(['nav-item', 'active' => route_named('moderator.responders.index')])>
+                    <a class="nav-link" href="{{ route('moderator.responders.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-browser-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-location"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M4 4m0 1a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1z"></path>
-                                <path d="M4 8h16"></path>
-                                <path d="M8 4v4"></path>
-                                <path d="M9.5 14.5l1.5 1.5l3 -3"></path>
-                             </svg>
+                                <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5">
+                                </path>
+                            </svg>
                         </span>
                         <span class="nav-link-title">
-                            Submissions
+                            Responders
                         </span>
                     </a>
                 </li>
