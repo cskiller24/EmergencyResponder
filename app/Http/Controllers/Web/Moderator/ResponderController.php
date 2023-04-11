@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Web\Moderator;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ResponderUpdateRequest;
-use App\Models\Contact;
 use App\Models\Location;
-use App\Models\RelatedLink;
 use App\Models\Responder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 

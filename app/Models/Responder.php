@@ -33,7 +33,7 @@ class Responder extends Model
             'emergency_types' => ['emergency_types.id', 'responders.emergency_type_id'],
             'locations' => ['locations.locatable_id', 'responders.id'],
             'contacts' => ['contacts.contactable_id', 'responders.id'],
-        ]
+        ],
     ];
 
     protected $fillable = [
@@ -46,7 +46,7 @@ class Responder extends Model
     ];
 
     protected $casts = [
-        'status' => ResponderStatusEnum::class
+        'status' => ResponderStatusEnum::class,
     ];
 
     public function location(): MorphOne

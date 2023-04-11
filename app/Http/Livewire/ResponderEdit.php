@@ -11,8 +11,11 @@ use Livewire\Component;
 class ResponderEdit extends Component
 {
     public int $contactsFormCount = 1;
+
     public int $linksFormCount = 1;
+
     public Responder $responder;
+
     public Collection $emergencyTypes;
 
     public function mount(
@@ -30,7 +33,7 @@ class ResponderEdit extends Component
             'emergencyTypes' => $this->emergencyTypes,
             'responder' => $this->responder,
             'contactsFormCount' => $this->contactsFormCount,
-            'linksFormCount' => $this->linksFormCount
+            'linksFormCount' => $this->linksFormCount,
         ];
 
         return view('livewire.responder-edit', $data);

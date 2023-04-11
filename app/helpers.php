@@ -8,11 +8,11 @@ use Spatie\Permission\Traits\HasRoles;
 if (! function_exists('redirectRole')) {
     function redirectRole($user = null): string
     {
-        if(! $user) {
+        if (! $user) {
             return RouteServiceProvider::HOME;
         }
 
-        if(! in_array(HasRoles::class ,class_uses_recursive($user::class))) {
+        if (! in_array(HasRoles::class, class_uses_recursive($user::class))) {
             return RouteServiceProvider::HOME;
         }
 

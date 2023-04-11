@@ -13,6 +13,7 @@ use Tests\Traits\UserCreator;
 class ResponderControllerTest extends TestCase
 {
     use UserCreator;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -45,7 +46,7 @@ class ResponderControllerTest extends TestCase
             ->has(Contact::factory()->count(mt_rand(1, 3)))
             ->create([
                 'name' => 'ZZZZZZ',
-                'updated_at' => now()->subDay()
+                'updated_at' => now()->subDay(),
             ]);
 
         Responder::factory()
@@ -74,7 +75,7 @@ class ResponderControllerTest extends TestCase
                 'name' => 'NEAREST ME',
                 'latitude' => 14.59615839236007,
                 'longitude' => 121.00406021183342,
-                'updated_at' => now()->subDay()
+                'updated_at' => now()->subDay(),
             ]);
 
         Responder::factory()
@@ -88,7 +89,7 @@ class ResponderControllerTest extends TestCase
         $response = $this->get(route('moderator.responders.index', [
             'f' => 'nearest',
             '_latitude' => 14.60683464626731,
-            '_longitude' => 121.00068168968626
+            '_longitude' => 121.00068168968626,
         ]));
 
         $response
@@ -107,7 +108,7 @@ class ResponderControllerTest extends TestCase
                 'name' => 'FARTHEST ME',
                 'latitude' => 14.59615839236007,
                 'longitude' => 121.00406021183342,
-                'updated_at' => now()->subDay()
+                'updated_at' => now()->subDay(),
             ]);
 
         Responder::factory()
@@ -118,11 +119,10 @@ class ResponderControllerTest extends TestCase
             ->has(Contact::factory()->count(mt_rand(1, 3)))
             ->create();
 
-
         $response = $this->get(route('moderator.responders.index', [
             'f' => 'farthest',
             '_latitude' => -14.632111,
-            '_longitude' =>  -58.987749
+            '_longitude' => -58.987749,
         ]));
 
         $response
@@ -192,7 +192,7 @@ class ResponderControllerTest extends TestCase
         $link1 = fake()->url();
         $link2 = fake()->url();
 
-        $response = $this->put(route('moderator.responders.update', $responder->id),[
+        $response = $this->put(route('moderator.responders.update', $responder->id), [
             'emergency_type_id' => $emergencyType->id,
             'name' => $newResponder->name,
             'description' => $newResponder->description,
@@ -208,7 +208,7 @@ class ResponderControllerTest extends TestCase
 
             'contacts' => [
                 ['type' => 'email', 'detail' => 'fake@email.com'],
-                ['type' => 'email', 'detail' => 'fake@email2.com']
+                ['type' => 'email', 'detail' => 'fake@email2.com'],
             ],
             'links' => [
                 ['link' => $link1],
@@ -225,19 +225,19 @@ class ResponderControllerTest extends TestCase
             'status' => $newResponder->status,
             'latitude' => $responder->latitude,
             'longitude' => $responder->longitude,
-            'emergency_type_id' => $emergencyType->id
+            'emergency_type_id' => $emergencyType->id,
         ]);
 
         $this->assertDatabaseHas('contacts', [
             'contactable_type' => Responder::class,
             'contactable_id' => $responder->id,
-            'detail' => 'fake@email.com'
+            'detail' => 'fake@email.com',
         ]);
 
         $this->assertDatabaseHas('contacts', [
             'contactable_type' => Responder::class,
             'contactable_id' => $responder->id,
-            'detail' => 'fake@email2.com'
+            'detail' => 'fake@email2.com',
         ]);
 
         $this->assertDatabaseHas('locations', [

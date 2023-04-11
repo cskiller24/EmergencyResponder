@@ -30,7 +30,7 @@ class RegisterControllerTest extends TestCase
         $assertData = [
             'model_type' => User::class,
             'model_id' => $user->id,
-            'role_id' => Role::findByName('user')->id
+            'role_id' => Role::findByName('user')->id,
         ];
 
         $this->assertDatabaseHas($user->getTable(), $user->only(['name', 'email']));
@@ -38,7 +38,7 @@ class RegisterControllerTest extends TestCase
         $assertData = [
             'model_type' => User::class,
             'model_id' => $dataUser->id,
-            'role_id' => Role::findByName('user')->id
+            'role_id' => Role::findByName('user')->id,
         ];
         $this->assertDatabaseHas(config('permission.table_names.model_has_roles'), $assertData);
     }
