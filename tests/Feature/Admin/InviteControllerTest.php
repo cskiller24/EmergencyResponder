@@ -44,7 +44,7 @@ class InviteControllerTest extends TestCase
             ->assertRedirect();
 
         $this->assertDatabaseHas($invite->getTable(), $data);
-        Mail::assertSent(SendInvite::class);
+        Mail::assertQueued(SendInvite::class);
     }
 
     public function testDoesNotStoreIfEmailExists(): void
@@ -153,7 +153,7 @@ class InviteControllerTest extends TestCase
         $response
             ->assertRedirect();
 
-        Mail::assertSent(SendInvite::class);
+        Mail::assertQueued(SendInvite::class);
     }
 
     public function testDestroy(): void
