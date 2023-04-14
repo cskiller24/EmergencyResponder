@@ -104,4 +104,9 @@ class Submission extends Model
     {
         return $this->monitored_by === null;
     }
+
+    public function canEdit(): bool
+    {
+        return $this->isAuthOwner() && ($this->status->value !== SubmissionStatusEnum::APPROVED->value);
+    }
 }

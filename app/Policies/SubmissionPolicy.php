@@ -34,9 +34,9 @@ class SubmissionPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user): bool
+    public function update(User $user, Submission $submission): bool
     {
-        return $user->hasPermissionTo('submission_update');
+        return $submission->canEdit() && $user->hasPermissionTo('submission_update');
     }
 
     /**
