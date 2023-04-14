@@ -5,7 +5,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-            <a href="{{ route('user.index') }}">
+            <a href="{{ route('public.index') }}">
                 Emergency Responder
             </a>
         </h1>
@@ -158,6 +158,7 @@
             </div>
             <div class="nav-item">
                 <div class="dropdown">
+                    @auth
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Hello
                         {{ auth()->user()->name }}!</a>
                     <div class="dropdown-menu">
@@ -168,29 +169,67 @@
                             <button type="submit" class="dropdown-item">Logout</button>
                         </form>
                     </div>
+                    @endauth
+
+                    @guest
+                        <a href="{{ route('login') }}" class="nav-link">Login</a>
+                    @endguest
                 </div>
             </div>
         </div>
         <div class="collapse navbar-collapse" id="navbar-menu">
             <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
                 <ul class="navbar-nav">
+                    @can('submission_store')
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('user.submissions.create') }}">
+                        <a class="nav-link" href="{{ route('public.submissions.create') }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-browser-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-browser-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path d="M4 4m0 1a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1z"></path>
                                     <path d="M4 8h16"></path>
                                     <path d="M8 4v4"></path>
-                                    <path d="M9.5 14.5l1.5 1.5l3 -3"></path>
-                                 </svg>
+                                    <path d="M10 14h4"></path>
+                                    <path d="M12 12v4"></path>
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">
+                                Create submission
+                            </span>
+                        </a>
+                    </li>
+                    @endcan
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('public.responders.index') }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-location" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"></path>
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">
+                                Responders
+                            </span>
+                        </a>
+                    </li>
+                    @auth
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('public.submissions.index') }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-location" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"></path>
+                                </svg>
                             </span>
                             <span class="nav-link-title">
                                 Submissions
                             </span>
                         </a>
                     </li>
+                    @endauth
                 </ul>
             </div>
         </div>

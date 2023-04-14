@@ -4,22 +4,15 @@ namespace App\Http\Controllers\Web\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubmissionStoreRequest;
+use App\Http\Requests\SubmissionUpdateRequest;
 use App\Models\Location;
 use App\Models\Submission;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class SubmissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
     public function create(): View
     {
@@ -47,38 +40,36 @@ class SubmissionController extends Controller
             \toastr()->success('Submission added successfully');
         }, 3);
 
-        return redirect('/');
+        return redirect()->route('public.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Submission $submission): View
     {
-        //
+        $submission->load(['location', 'monitoredBy', 'emergencyType', 'contacts', 'submittedBy', 'relatedLinks']);
+
+        return view('user.submission-edit', compact('submission'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(SubmissionUpdateRequest $request, Submission $submission): RedirectResponse
     {
-        //
-    }
+        $this->authorize('update', $submission);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        $locationFillable = app(Location::class)->getFillable();
+        DB::transaction(function () use (
+            $submission,
+            $request,
+            $locationFillable,
+        ) {
+            $submission->update($request->only($submission->getFillable()));
+            $submission->location()->update($request->only($locationFillable));
+            $submission->contacts()->delete();
+            $submission->relatedLinks()->delete();
+            $submission->contacts()->createMany($request->input('contacts'));
+            $submission->relatedLinks()->createMany($request->input('links'));
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            \toastr()->success('Submission updated successfully');
+        });
+
+        return redirect()->route('public.submissions.show', $submission->id);
     }
 }

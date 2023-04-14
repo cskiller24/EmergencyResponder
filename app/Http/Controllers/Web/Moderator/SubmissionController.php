@@ -54,6 +54,34 @@ class SubmissionController extends Controller
         return view('moderator.submissions', compact('submissions', 'submissionsCount', 'statuses'));
     }
 
+    public function indexAuth(): View
+    {
+        $submissions = Submission::query()
+            ->when(request('s'), function (Builder $q) {
+                $q->search(request('s'));
+            })
+            ->when(request('f') && SubmissionStatusEnum::tryFrom((int) request('f'))?->titleCase(), function (Builder $q) {
+                $q->where('status', request('f'));
+            })
+            ->when(request('f') && in_array(request('f'), ['nearest', 'farthest']), function ($q) {
+                if (is_numeric(request('_latitude')) && is_numeric(request('_longitude'))) {
+                    if (request('f') === 'nearest') {
+                        $q->nearest(request('_latitude'), request('_longitude'));
+                    } else {
+                        $q->farthest(request('_latitude'), request('_longitude'));
+                    }
+                }
+            })
+            ->where('monitored_by', auth()->id())
+            ->with(['location', 'monitoredBy', 'emergencyType', 'contacts', 'submittedBy'])
+            ->latest('updated_at')
+            ->paginate(validatePerPage());
+
+        $statuses = SubmissionStatusEnum::cases();
+
+        return view('moderator.submissions-auth', compact('submissions', 'statuses'));
+    }
+
     public function show(Submission $submission): View
     {
         $this->authorize('view', $submission);

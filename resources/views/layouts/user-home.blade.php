@@ -25,7 +25,7 @@
             <div class="page-header d-print-none text-white">
                 <div class="container-xl">
                     <div class="row g-2 align-items-center">
-                        <div class="col">
+                        <div class="col-md-6 col-12">
                             <!-- Page pre-title -->
                             <div class="page-pretitle">
                                 @yield('pre-title', 'USER')
@@ -35,6 +35,7 @@
                             </h2>
                         </div>
                         <!-- Page title actions -->
+                        @can('submission_store')
                         <div class="col-auto ms-auto d-print-none">
                             <div class="btn-list">
                                 <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
@@ -50,6 +51,9 @@
                                 </a>
                             </div>
                         </div>
+                        @endcan
+
+
                     </div>
                 </div>
             </div>
@@ -62,6 +66,7 @@
         </div>
     </div>
     @include('partials.tabler-scripts')
+    @stack('geolocation-script')
 
     @if ($enableLivewire ?? false)
         @livewireScripts

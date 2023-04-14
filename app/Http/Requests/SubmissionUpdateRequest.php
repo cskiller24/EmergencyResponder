@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Enums\SubmissionStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Validator;
 
 class SubmissionUpdateRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class SubmissionUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,24 +26,55 @@ class SubmissionUpdateRequest extends FormRequest
     {
         return [
             'notify' => ['required', 'boolean'],
-            'emegency_type_id' => ['required', 'exists:emergency_types,id'],
+            'emergency_type_id' => ['required', 'exists:emergency_types,id'],
             'status' => ['required', new Enum(SubmissionStatusEnum::class)],
             'name' => ['required', 'max:255'],
             'description' => ['required'],
 
             'links' => ['required', 'array'],
-            'links.*' => ['required', 'url'],
+            'links.*.link' => ['required', 'url'],
 
             'contacts' => ['required', 'array'],
             'contacts.*.type' => ['required'],
             'contacts.*.detail' => ['required'],
 
-            'longitude' => ['required', 'max:255'],
-            'latitude' => ['required', 'max:255'],
+            'longitude' => ['required', 'max:255', 'numeric'],
+            'latitude' => ['required', 'max:255', 'numeric'],
             'city' => ['required'],
             'region' => ['required'],
             'country' => ['required'],
             'zip' => ['required'],
+        ];
+    }
+
+    public function getValidatorInstance(): Validator
+    {
+        if ($this->has('notify') && $this->get('notify') === 'on') {
+            $this->merge([
+                'notify' => true,
+            ]);
+        }
+
+        if (! $this->has('notify')) {
+            $this->merge([
+                'notify' => false,
+            ]);
+        }
+
+        return parent::getValidatorInstance();
+    }
+
+    public function messages()
+    {
+        return [
+            'links.*.link' => [
+                'required' => 'One of the links is not filled',
+                'url' => 'One of the links is not a valid url',
+            ],
+            'contacts.*.type.required' => 'One of contact type is required',
+            'contacts.*.detail.required' => 'One of contact detail is required',
+            'emergency_type_id.required' => 'The emergency Type field is required',
+            'emergency_type_id.exists' => 'The emergency type does not exists',
         ];
     }
 }

@@ -38,8 +38,8 @@ class SubmissionStoreRequest extends FormRequest
             'contacts.*.type' => ['required'],
             'contacts.*.detail' => ['required'],
 
-            'longitude' => ['required', 'max:255'],
-            'latitude' => ['required', 'max:255'],
+            'longitude' => ['required', 'max:255', 'numeric'],
+            'latitude' => ['required', 'max:255', 'numeric'],
             'city' => ['required', 'max:255'],
             'region' => ['required', 'max:255'],
             'country' => ['required', 'max:255'],

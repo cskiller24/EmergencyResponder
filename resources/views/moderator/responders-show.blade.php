@@ -25,7 +25,7 @@ Responder
 
                         <div class="my-2 hr-text"></div>
                         <p class="h4">Location</p>
-                        <p>{{ $responder->location->fullAddress() }}</p>
+                        <p>{{ $responder->location->fullAddress }}</p>
 
                         <div class="my-2 hr-text"></div>
                         <p class="h4">Emergency Type</p>
