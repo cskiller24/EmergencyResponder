@@ -37,7 +37,7 @@
                     </div>
                     <div class="col-12 mb-2">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="notify" @checked(old('notify')) />
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="submitter_notify" @checked(old('notify')) />
                             <label class="form-check-label" for="flexSwitchCheckChecked">Notify me via Email once status is updated</label>
                         </div>
                     </div>

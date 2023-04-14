@@ -25,7 +25,7 @@ class SubmissionUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'notify' => ['required', 'boolean'],
+            'submitter_notify' => ['required', 'boolean'],
             'emergency_type_id' => ['required', 'exists:emergency_types,id'],
             'status' => ['required', new Enum(SubmissionStatusEnum::class)],
             'name' => ['required', 'max:255'],
@@ -49,15 +49,15 @@ class SubmissionUpdateRequest extends FormRequest
 
     public function getValidatorInstance(): Validator
     {
-        if ($this->has('notify') && $this->get('notify') === 'on') {
+        if ($this->has('submitter_notify') && $this->get('submitter_notify') === 'on') {
             $this->merge([
-                'notify' => true,
+                'submitter_notify' => true,
             ]);
         }
 
         if (! $this->has('notify')) {
             $this->merge([
-                'notify' => false,
+                'submitter_notify' => false,
             ]);
         }
 

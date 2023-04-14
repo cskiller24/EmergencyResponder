@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-12 mb-2">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" name="notify" @checked($submission->notify) />
+                            <input class="form-check-input" type="checkbox" name="submitter_notify" @checked($submission->notify) />
                             <label class="form-check-label">Notify me via Email once status is updated</label>
                         </div>
                     </div>

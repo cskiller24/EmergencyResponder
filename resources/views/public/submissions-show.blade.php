@@ -17,6 +17,7 @@
                     </div>
                 </div>
                 <p class="card-text">{{ $submission->description }}</p>
+                <p class="card-text">{{ $submission->emergencyType->name }}</p>
 
                 <div class="my-2 hr-text"></div>
                 <p class="h4">Handlers</p>
