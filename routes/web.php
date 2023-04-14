@@ -10,8 +10,9 @@ use App\Http\Controllers\Web\Auth\RegisterController;
 use App\Http\Controllers\Web\Moderator\ResponderController;
 use App\Http\Controllers\Web\Moderator\SubmissionController as ModeratorSubmissionController;
 use App\Http\Controllers\Web\User\SubmissionController as UserSubmissionController;
-use App\Mail\SendInvite;
-use App\Models\Invite;
+use App\Mail\SubmissionDeny;
+use App\Http\Controllers\Web\Public\SubmissionController as PublicSubmissionController;
+use App\Http\Controllers\Web\Public\ResponderController as PublicResponderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,6 +55,7 @@ Route::group(['prefix' => 'moderator', 'middleware' => ['auth', 'role:moderator'
 
     Route::group(['prefix' => 'submissions', 'as' => 'submissions.'], function () {
         Route::get('/', [ModeratorSubmissionController::class, 'index'])->name('index');
+        Route::get('/my-submissions', [ModeratorSubmissionController::class, 'indexAuth'])->name('index.auth');
         Route::get('/{submission}', [ModeratorSubmissionController::class, 'show'])->name('show');
         Route::patch('/{submission}/moderator', [ModeratorSubmissionController::class, 'addModerator'])->name('moderate');
         Route::patch('/{submission}/approve', [ModeratorSubmissionController::class, 'approveSubmission'])->name('approve');
@@ -64,11 +66,21 @@ Route::group(['prefix' => 'moderator', 'middleware' => ['auth', 'role:moderator'
 });
 
 // User
-Route::group(['prefix' => 'user', 'middleware' => ['role:user', 'auth'], 'as' => 'user.'], function () {
-    Route::view('/', 'user.index')->name('index');
+Route::group(['as' => 'public.'], function () {
+    Route::get('/home', function () {
+        return view('public.index');
+    })->name('index');
 
+    Route::get('/submissions', [PublicSubmissionController::class, 'index'])->name('submissions.index');
     Route::get('/submissions/create', [UserSubmissionController::class, 'create'])->name('submissions.create');
     Route::post('/submissions', [UserSubmissionController::class, 'store'])->name('submissions.store');
+    Route::get('/submissions/{submission}', [PublicSubmissionController::class, 'show'])->name('submissions.show');
+    Route::get('/submissions/{submission}/edit', [UserSubmissionController::class, 'edit'])->name('submission.edit');
+    Route::put('/submissions/{submission}', [UserSubmissionController::class, 'update'])->name('submissions.update');
+
+    Route::get('/responders/', [PublicResponderController::class, 'index'])->name('responders.index');
+    Route::get('/responders/{responder}', [PublicResponderController::class, 'show'])->name('responders.show');
+
 });
 
 Route::get('/invites/accept/{invite:code}', [InviteController::class, 'accept'])->name('invites.accept');
@@ -78,5 +90,5 @@ Route::post('/invites/{invite:code}', [InviteController::class, 'process'])->nam
 // Route::put('/settings', [UserController::class, 'update'])->middleware('auth')->name('settings.update');
 
 Route::get('test', function () {
-    return new SendInvite(Invite::factory()->create());
+    return new SubmissionDeny();
 });
