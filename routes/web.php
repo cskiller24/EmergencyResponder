@@ -9,10 +9,10 @@ use App\Http\Controllers\Web\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Web\Auth\RegisterController;
 use App\Http\Controllers\Web\Moderator\ResponderController;
 use App\Http\Controllers\Web\Moderator\SubmissionController as ModeratorSubmissionController;
+use App\Http\Controllers\Web\Public\ResponderController as PublicResponderController;
+use App\Http\Controllers\Web\Public\SubmissionController as PublicSubmissionController;
 use App\Http\Controllers\Web\User\SubmissionController as UserSubmissionController;
 use App\Mail\SubmissionDeny;
-use App\Http\Controllers\Web\Public\SubmissionController as PublicSubmissionController;
-use App\Http\Controllers\Web\Public\ResponderController as PublicResponderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -80,7 +80,6 @@ Route::group(['as' => 'public.'], function () {
 
     Route::get('/responders/', [PublicResponderController::class, 'index'])->name('responders.index');
     Route::get('/responders/{responder}', [PublicResponderController::class, 'show'])->name('responders.show');
-
 });
 
 Route::get('/invites/accept/{invite:code}', [InviteController::class, 'accept'])->name('invites.accept');

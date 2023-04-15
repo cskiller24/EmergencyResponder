@@ -11,7 +11,8 @@ use Illuminate\Queue\SerializesModels;
 
 class SubmissionApprove extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.

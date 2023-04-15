@@ -29,7 +29,7 @@ class Location extends Model
     public function fullAddress(): Attribute
     {
         return Attribute::make(
-           get: fn() => sprintf(
+            get: fn () => sprintf(
                 '%s, %s %s, %s %s',
                 $this->line,
                 $this->city,

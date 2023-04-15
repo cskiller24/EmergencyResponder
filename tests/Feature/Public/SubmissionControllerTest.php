@@ -7,13 +7,11 @@ use App\Models\EmergencyType;
 use App\Models\Location;
 use App\Models\RelatedLink;
 use App\Models\Submission;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class SubmissionControllerTest extends TestCase
 {
-     /**
+    /**
      * A basic feature test example.
      */
     public function testIndex(): void

@@ -13,7 +13,6 @@ use Illuminate\View\View;
 
 class SubmissionController extends Controller
 {
-
     public function create(): View
     {
         $this->authorize('store', Submission::class);
