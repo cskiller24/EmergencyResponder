@@ -162,7 +162,7 @@
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Hello
                         {{ auth()->user()->name }}!</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item" href="{{ route('settings.edit') }}">Settings</a>
                         <div class="dropdown-divider"></div>
                         <form action="{{ route('logout') }}" method="post">
                             @csrf

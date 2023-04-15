@@ -7,6 +7,7 @@ use App\Http\Controllers\Web\Admin\PermissionController;
 use App\Http\Controllers\Web\Admin\RoleController;
 use App\Http\Controllers\Web\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Web\Auth\RegisterController;
+use App\Http\Controllers\Web\Auth\SettingsController;
 use App\Http\Controllers\Web\Moderator\ResponderController;
 use App\Http\Controllers\Web\Moderator\SubmissionController as ModeratorSubmissionController;
 use App\Http\Controllers\Web\Public\ResponderController as PublicResponderController;
@@ -85,9 +86,11 @@ Route::group(['as' => 'public.'], function () {
 Route::get('/invites/accept/{invite:code}', [InviteController::class, 'accept'])->name('invites.accept');
 Route::post('/invites/{invite:code}', [InviteController::class, 'process'])->name('invites.register');
 
-// Route::get('/settings', [UserController::class, 'edit'])->middleware('auth')->name('settings.show');
-// Route::put('/settings', [UserController::class, 'update'])->middleware('auth')->name('settings.update');
+Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
+Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
+Route::get('/settings/password', [SettingsController::class, 'editPassword'])->name('settings.password.edit');
+Route::put('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password.update');
 Route::get('test', function () {
     return new SubmissionDeny();
 });

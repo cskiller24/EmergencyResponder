@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\SubmissionStatusEnum;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
@@ -88,5 +89,15 @@ if (! function_exists('validatePerPage')) {
         }
 
         return $page;
+    }
+}
+
+if(! function_exists('hasRole')) {
+    /**
+     * Check if user has role
+     */
+    function hasRole($role): bool
+    {
+        return auth()->check() && auth()->user()->hasRole($role);
     }
 }
