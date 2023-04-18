@@ -92,7 +92,7 @@ if (! function_exists('validatePerPage')) {
     }
 }
 
-if(! function_exists('hasRole')) {
+if (! function_exists('hasRole')) {
     /**
      * Check if user has role
      */

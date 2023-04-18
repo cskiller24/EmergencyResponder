@@ -3,6 +3,9 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Request;
+use Spatie\Permission\Exceptions\UnauthorizedException;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -41,13 +44,19 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->reportable(function (UnauthorizedException $e, Request $request) {
+            if ($request->expectsJson()) {
+                response()->json(['message' => 'User does not have right role', 403]);
+            }
         });
     }
 
     public function render($request, Throwable $throwable)
     {
+        if ($throwable instanceof UnauthorizedException && $request->expectsJson()) {
+            return response()->json(['message' => 'User does not have right role'], Response::HTTP_FORBIDDEN);
+        }
+
         return parent::render($request, $throwable);
     }
 }
